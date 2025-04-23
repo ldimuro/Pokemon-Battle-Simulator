@@ -1,0 +1,4 @@
+name,type,power,accuracy,category,pp,effect
+tackle,normal,40,100,physical,35,none
+leer,normal,-1,100,status,30,lowers opponent's defense
+
