@@ -1,6 +1,10 @@
-import pypokedex as pokedex
+from pokemon import Pokemon
 import random
 
-pokemon_id = random.randint(1, 151)
-random_pokemon = pokedex.get(dex=pokemon_id)
-print(random_pokemon)
+version = 'red-blue'
+
+agent_pokemon = Pokemon(4, version)
+agent_pokemon.print_data()
+
+random_pokemon = Pokemon(random.randint(1, 151), version)
+random_pokemon.print_data()
