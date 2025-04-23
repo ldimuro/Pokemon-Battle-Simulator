@@ -157,7 +157,7 @@ transform,normal,-1,-1,status,10,user takes on the form and attacks of the oppon
 tri-attack,normal,80,100,special,10,may paralyze, burn or freeze opponent
 twineedle,bug,25,100,physical,20,hits twice in one turn may poison opponent
 vine-whip,grass,45,100,physical,25,none
-vise-grip,normal,55,100,physical,30,none
+vice-grip,normal,55,100,physical,30,none
 water-gun,water,40,100,special,25,none
 waterfall,water,80,100,physical,15,may cause flinching
 whirlwind,normal,-1,-1,status,20,in battles, the opponent switches in the wild, the pokémon runs
