@@ -5,10 +5,10 @@ from dataclasses import dataclass
 @dataclass
 class Move:
     name: str
-    move_type: str  # e.g., "Electric", "Water"
-    power: int      # e.g., 90
-    accuracy: int   # 0-100
-    category: str   # "Physical", "Special", "Status"
+    move_type: str 
+    power: int 
+    accuracy: int 
+    category: str # physical, special, status
     pp: int
     effect: str
 
@@ -29,5 +29,7 @@ def get_moves_db():
                 effect=row['effect']
             )
             moves_db[move.name] = move
-            
+
     return moves_db
+
+moves_db = get_moves_db()
