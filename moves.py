@@ -5,7 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class Move:
     name: str
-    move_type: str 
+    type: str 
     power: int 
     accuracy: int 
     category: str # physical, special, status
@@ -21,7 +21,7 @@ def get_moves_db():
         for row in reader:
             move = Move(
                 name=row['name'],
-                move_type=row['type'],
+                type=row['type'],
                 power=int(row['power']),
                 accuracy=int(row['accuracy']),
                 category=row['category'],

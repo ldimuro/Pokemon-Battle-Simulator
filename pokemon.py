@@ -5,14 +5,15 @@ import requests
 from PIL import Image
 from io import BytesIO
 from pokemon_enums import Status
+import numpy as np
 
 class Pokemon:
     def __init__(self, pokemon_id, version):
         pokemon = pokedex.get(dex=pokemon_id)
-        print('pokemon:', pokemon)
 
         self.id = pokemon.dex
         self.name = pokemon.name
+        self.level = 50
         self.height = pokemon.height
         self.weight = pokemon.weight
         self.types = pokemon.types
@@ -27,6 +28,7 @@ class Pokemon:
         self.sp_def = base_stats.sp_def
         self.speed = base_stats.speed
         self.overall_stats = self.hp + self.attack + self.defense + self.sp_atk + self.sp_def + self.speed
+        self.is_fainted = False
 
         # BATTLE STATE
         self.curr_hp = self.hp
@@ -63,7 +65,7 @@ class Pokemon:
             formatted_moves.remove(random_damage_move)
 
             # At least 1 move must be of the same type as the Pokemon (if there are any)
-            same_type_moves = [move for move in formatted_moves if move.move_type in self.types]
+            same_type_moves = [move for move in formatted_moves if move.type in self.types]
             if len(same_type_moves) > 0:
                 random_same_type_move = random.choice(same_type_moves)
             else:
@@ -87,17 +89,23 @@ class Pokemon:
     
     def use_move(self):
         return random.choice(self.moves)
+    
+    def reduce_hp(self, damage):
+        self.curr_hp = max(0, np.round(self.curr_hp - damage, 2))
+        if self.curr_hp <= 0:
+            self.is_fainted = True
+            print(f'{self.name.upper()} fainted!')
 
         
 
     def print_data(self):
         print('===============================================================================')
-        print(f'Name: {self.name}')
+        print(f'Name: {self.name.upper()}')
         print(f'Types: {' '.join(self.types)}')
         print(f'Stats: HP:{self.hp} | ATK:{self.attack} | DEF:{self.defense} | SP ATK:{self.sp_atk} | SP DEF:{self.sp_def} | SPEED:{self.speed} | [OVR: {self.overall_stats}]')
         print(f'Moves: ', end='')
         for move in self.moves:
-            print(f'{move.name} ', end='')
+            print(f'{move.name.upper()} ', end='')
         print()
         print(f'Abilities: {' '.join(self.abilities)}')
         print('===============================================================================')

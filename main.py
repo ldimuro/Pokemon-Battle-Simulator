@@ -2,6 +2,10 @@ from pokemon import Pokemon
 from battle_env import BattleEnv
 import moves
 import random
+import numpy as np
+import main_helper
+
+main_helper.set_seed(random.randint(0, 1000000))
 
 version = 'red-blue'
 
@@ -14,3 +18,4 @@ opp_pokemon.print_data()
 env = BattleEnv(agent_pokemon, opp_pokemon)
 
 env.start_battle()
+
