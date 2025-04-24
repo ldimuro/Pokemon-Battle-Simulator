@@ -136,9 +136,11 @@ class Pokemon:
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.speed}')
             case 'evasiveness':
                 self.evasiveness_tier += change
+                self.evasiveness_tier = max(-6, self.evasiveness_tier) if self.evasiveness_tier < 0 else min(6, self.evasiveness_tier)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.evasiveness_tier}')
             case 'accuracy':
                 self.accuracy_tier += change
+                self.accuracy_tier = max(-6, self.accuracy_tier) if self.accuracy_tier < 0 else min(6, self.accuracy_tier)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.accuracy_tier}')
             case _:
                 pass

@@ -59,8 +59,19 @@ class BattleEnv:
         if hit_chance == 1 or random.randint(0, 100) <= hit_chance:
             match move.category:
                 case ('physical' | 'special'):
-                    damage = self.calculate_damage(move, attacker, defender)
-                    defender.reduce_hp(damage)
+
+                    if move.power == -1:
+                        print('\tHANDLE ATTACKS WITH NO POWER')
+                        
+                        if move.name == 'seismic-toss':
+                            damage = self.calculate_damage(move, attacker, defender, damage_override=attacker.level)
+                            defender.reduce_hp(damage)
+                        else:
+                            damage = self.calculate_damage(move, attacker, defender, damage_override=0)
+                            defender.reduce_hp(damage)
+                    else:
+                        damage = self.calculate_damage(move, attacker, defender)
+                        defender.reduce_hp(damage)
 
                     if 'may' in move.effect:
                         print('\tHANDLE MAY CASES')
@@ -73,6 +84,7 @@ class BattleEnv:
                         elif 'max hp' in move.effect:
                             attacker.recover_hp(np.round(attacker.base_hp/2, 2))
 
+
                 case 'status':
                     self.calculate_status(move, attacker, defender)
                 case _:
@@ -80,7 +92,7 @@ class BattleEnv:
         else:
             print(f'{attacker.name.upper()}\'s move missed')
 
-    def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon):
+    def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon, damage_override=-1):
         type_effectivenss_chart = pd.read_csv('type_effectiveness.csv', index_col=0)
         a = attacker.sp_atk if move.category == 'special' else attacker.attack
         d = defender.sp_def if move.category == 'special' else defender.defense
@@ -93,7 +105,10 @@ class BattleEnv:
         level_factor = (((2*attacker.level*attacker.crit_ratio)/5)+2)
         base = ((level_factor * move.power * (a / d)) / 50) + 2
 
-        damage = np.round(base * stab * type_effect * random_val, 2)
+        if damage_override == -1:
+            damage = np.round(base * stab * type_effect * random_val, 2)
+        else:
+            damage = damage_override
         print('\tDAMAGE: ', damage)
 
         if type_effect == 2.0:
