@@ -103,6 +103,10 @@ class Pokemon:
             self.is_fainted = True
             print(f'{self.name.upper()} fainted!')
 
+    def recover_hp(self, recovered_hp):
+        self.curr_hp = min(self.base_hp, np.round(self.curr_hp + recovered_hp, 2))
+        print(f'\t{self.name.upper()} recovered {recovered_hp} HP')
+
     def modifiy_stats_stage(self, stat, change):
         match stat:
             case 'attack':

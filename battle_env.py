@@ -4,6 +4,7 @@ from pokemon import Pokemon
 from moves import Move
 import pandas as pd
 import numpy as np
+from pokemon_enums import Status
 
 class BattleEnv:
     def __init__(self, curr_pokemon: Pokemon, opp_pokemon: Pokemon):
@@ -60,6 +61,18 @@ class BattleEnv:
                 case ('physical' | 'special'):
                     damage = self.calculate_damage(move, attacker, defender)
                     defender.reduce_hp(damage)
+
+                    if 'may' in move.effect:
+                        print('\tHANDLE MAY CASES')
+                    
+                    if 'recover' in move.effect:
+                        if 'inflicted' in move.effect:
+                            # ADD CASE FOR DREAM EATER
+                            #if move.name == 'dream-eater' and defender.status_condition == Status.ASLEEP
+                            attacker.recover_hp(np.round(damage/2, 2))
+                        elif 'max hp' in move.effect:
+                            attacker.recover_hp(np.round(attacker.base_hp/2, 2))
+
                 case 'status':
                     self.calculate_status(move, attacker, defender)
                 case _:
@@ -157,8 +170,7 @@ class BattleEnv:
                 elif 'accuracy' in effect:
                     defender.modifiy_stats_stage('accuracy', -1)
 
-            if 'may' in effect:
-                print('HANDLE MAY CASES')
+            
 
     def get_hit_chance(self, move: Move, attacker: Pokemon, defender: Pokemon):
         accuracy_stage_multipliers = {
