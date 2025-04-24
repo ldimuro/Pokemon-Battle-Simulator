@@ -4,6 +4,7 @@ import random
 import requests
 from PIL import Image
 from io import BytesIO
+from pokemon_enums import Status
 
 class Pokemon:
     def __init__(self, pokemon_id, version):
@@ -29,13 +30,14 @@ class Pokemon:
 
         # BATTLE STATE
         self.curr_hp = self.hp
-        self.status_condition = None
+        self.status_condition = Status.NONE
         self.atk_tier = 0
         self.def_tier = 0
         self.sp_atk_tier = 0
         self.sp_def_tier = 0
         self.speed_tier = 0
         self.evasiveness_tier = 0
+        self.crit_ratio = 1
 
         # MOVES
         all_moves = [move.name for move in pokemon.moves[version]]
@@ -82,6 +84,9 @@ class Pokemon:
             final_moves = formatted_moves
 
         return final_moves
+    
+    def use_move(self):
+        return random.choice(self.moves)
 
         
 
