@@ -16,6 +16,9 @@ class BattleEnv:
         
         turn = 1
         while self.player_pokemon.curr_hp > 0 and self.opp_pokemon.curr_hp > 0:
+            if turn == 100:
+                print('STALEMATE')
+                break
 
             player_move: Move = self.player_pokemon.use_move()
             opp_move: Move = self.opp_pokemon.use_move()
@@ -51,15 +54,14 @@ class BattleEnv:
     def execute_move(self, move: Move, attacker: Pokemon, defender: Pokemon):
         print(f'{attacker.name.upper()} uses {move.name.upper()} on {defender.name.upper()}')
 
-        if random.randint(0, 100) <= move.accuracy or move.accuracy == -1:
+        hit_chance = self.get_hit_chance(move, attacker, defender)
+        if hit_chance == 1 or random.randint(0, 100) <= hit_chance:
             match move.category:
                 case ('physical' | 'special'):
                     damage = self.calculate_damage(move, attacker, defender)
                     defender.reduce_hp(damage)
                 case 'status':
-
-                    status = self.calculate_status(move, attacker, defender)
-                    pass
+                    self.calculate_status(move, attacker, defender)
                 case _:
                     pass
         else:
@@ -107,6 +109,8 @@ class BattleEnv:
                     attacker.modifiy_stats_stage('speed', 2)
                 elif 'evasiveness' in effect:
                     attacker.modifiy_stats_stage('evasiveness', 2)
+                elif 'accuracy' in effect:
+                    attacker.modifiy_stats_stage('accuracy', 2)
             elif 'sharply lowers' in effect:
                 if 'attack' in effect:
                     defender.modifiy_stats_stage('attack', -2)
@@ -120,6 +124,8 @@ class BattleEnv:
                     defender.modifiy_stats_stage('speed', -2)
                 elif 'evasiveness' in effect:
                     defender.modifiy_stats_stage('evasiveness', -2)
+                elif 'accuracy' in effect:
+                    defender.modifiy_stats_stage('accuracy', -2)
             elif 'raises' in effect:
                 if 'attack' in effect:
                     attacker.modifiy_stats_stage('attack', 1)
@@ -133,6 +139,8 @@ class BattleEnv:
                     attacker.modifiy_stats_stage('speed', 1)
                 elif 'evasiveness' in effect:
                     attacker.modifiy_stats_stage('evasiveness', 1)
+                elif 'accuracy' in effect:
+                    attacker.modifiy_stats_stage('accuracy', 1)
             elif 'lowers' in effect:
                 if 'attack' in effect:
                     defender.modifiy_stats_stage('attack', -1)
@@ -146,6 +154,22 @@ class BattleEnv:
                     defender.modifiy_stats_stage('speed', -1)
                 elif 'evasiveness' in effect:
                     defender.modifiy_stats_stage('evasiveness', -1)
+                elif 'accuracy' in effect:
+                    defender.modifiy_stats_stage('accuracy', -1)
+
+            if 'may' in effect:
+                print('HANDLE MAY CASES')
+
+    def get_hit_chance(self, move: Move, attacker: Pokemon, defender: Pokemon):
+        accuracy_stage_multipliers = {
+            -6: 0.33, -5: 0.375, -4: 0.43, -3: 0.5, -2: 0.6, -1: 0.75,
+             0: 1.0,  1: 1.33,   2: 1.66,  3: 2.0,  4: 2.33,  5: 2.66, 6: 3.0
+        }
+
+        accuracy = accuracy_stage_multipliers[attacker.accuracy_tier]
+        evasiveness= accuracy_stage_multipliers[defender.evasiveness_tier]
+        base = 100 if move.accuracy == -1 else move.accuracy / 100.0
+        return base * (accuracy / evasiveness)
 
     
     def print_game_state(self):

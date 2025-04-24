@@ -45,6 +45,7 @@ class Pokemon:
         self.sp_def_tier = 0
         self.speed_tier = 0
         self.evasiveness_tier = 0
+        self.accuracy_tier = 0
         self.crit_ratio = 1
 
         # MOVES
@@ -132,6 +133,9 @@ class Pokemon:
             case 'evasiveness':
                 self.evasiveness_tier += change
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.evasiveness_tier}')
+            case 'accuracy':
+                self.accuracy_tier += change
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.accuracy_tier}')
             case _:
                 pass
 
