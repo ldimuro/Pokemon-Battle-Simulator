@@ -31,15 +31,15 @@ class BattleEnv:
             self.print_game_state()
 
             # First Move
-            move_result = self.execute_move(first_move, first_pokemon, second_pokemon)
-            turn += 1
+            self.execute_move(first_move, first_pokemon, second_pokemon)
+
+            if second_pokemon.is_fainted:
+                break
 
             # Second Move
-            if not second_pokemon.is_fainted:
-                # print(f'=-=-=-=-=-=-=-=|TURN {turn}|=-=-=-=-=-=-=-=')
-                # self.print_game_state()
-                self.execute_move(second_move, second_pokemon, first_pokemon)
-                # turn += 1
+            self.execute_move(second_move, second_pokemon, first_pokemon)
+
+            turn += 1
             
 
         winner = self.player_pokemon if self.player_pokemon.curr_hp > 0 else self.opp_pokemon
@@ -51,16 +51,19 @@ class BattleEnv:
     def execute_move(self, move: Move, attacker: Pokemon, defender: Pokemon):
         print(f'{attacker.name.upper()} uses {move.name.upper()} on {defender.name.upper()}')
 
-        match move.category:
-            case ('physical' | 'special'):
-                damage = self.calculate_damage(move, attacker, defender)
-                defender.reduce_hp(damage)
-            case 'status':
-                pass
-            case _:
-                pass
+        if random.randint(0, 100) <= move.accuracy or move.accuracy == -1:
+            match move.category:
+                case ('physical' | 'special'):
+                    damage = self.calculate_damage(move, attacker, defender)
+                    defender.reduce_hp(damage)
+                case 'status':
 
-        return f'{attacker.name.upper()} uses {move.name.upper()} on {defender.name.upper()}'
+                    status = self.calculate_status(move, attacker, defender)
+                    pass
+                case _:
+                    pass
+        else:
+            print(f'{attacker.name.upper()}\'s move missed')
 
     def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon):
         type_effectivenss_chart = pd.read_csv('type_effectiveness.csv', index_col=0)
@@ -87,16 +90,74 @@ class BattleEnv:
 
         return damage
     
-    def print_game_state(self):
-        hp_ratio = self.player_pokemon.curr_hp / self.player_pokemon.hp
-        filled = int(hp_ratio * 15)
-        empty = 15 - filled
-        print(f"{self.player_pokemon.name.upper()}\t[{'#' * filled}{'-' * empty}] HP {self.player_pokemon.curr_hp}/{self.player_pokemon.hp}")
+    def calculate_status(self, move: Move, attacker: Pokemon, defender: Pokemon):
+        effect_segments = move.effect.split('and')
 
-        hp_ratio = self.opp_pokemon.curr_hp / self.opp_pokemon.hp
+        for effect in effect_segments:
+            if 'sharply raises' in effect:
+                if 'attack' in effect:
+                    attacker.modifiy_stats_stage('attack', 2)
+                elif 'defense' in effect and 'special defense' not in effect:
+                    attacker.modifiy_stats_stage('defense', 2)
+                elif 'special attack' in effect:
+                    attacker.modifiy_stats_stage('sp_atk', 2)
+                elif 'special defense' in effect:
+                    attacker.modifiy_stats_stage('sp_def', 2)
+                elif 'speed' in effect:
+                    attacker.modifiy_stats_stage('speed', 2)
+                elif 'evasiveness' in effect:
+                    attacker.modifiy_stats_stage('evasiveness', 2)
+            elif 'sharply lowers' in effect:
+                if 'attack' in effect:
+                    defender.modifiy_stats_stage('attack', -2)
+                elif 'defense' in effect and 'special defense' not in effect:
+                    defender.modifiy_stats_stage('defense', -2)
+                elif 'special attack' in effect:
+                    defender.modifiy_stats_stage('sp_atk', -2)
+                elif 'special defense' in effect:
+                    defender.modifiy_stats_stage('sp_def', -2)
+                elif 'speed' in effect:
+                    defender.modifiy_stats_stage('speed', -2)
+                elif 'evasiveness' in effect:
+                    defender.modifiy_stats_stage('evasiveness', -2)
+            elif 'raises' in effect:
+                if 'attack' in effect:
+                    attacker.modifiy_stats_stage('attack', 1)
+                elif 'defense' in effect and 'special defense' not in effect:
+                    attacker.modifiy_stats_stage('defense', 1)
+                elif 'special attack' in effect:
+                    attacker.modifiy_stats_stage('sp_atk', 1)
+                elif 'special defense' in effect:
+                    attacker.modifiy_stats_stage('sp_def', 1)
+                elif 'speed' in effect:
+                    attacker.modifiy_stats_stage('speed', 1)
+                elif 'evasiveness' in effect:
+                    attacker.modifiy_stats_stage('evasiveness', 1)
+            elif 'lowers' in effect:
+                if 'attack' in effect:
+                    defender.modifiy_stats_stage('attack', -1)
+                elif 'defense' in effect and 'special defense' not in effect:
+                    defender.modifiy_stats_stage('defense', -1)
+                elif 'special attack' in effect:
+                    defender.modifiy_stats_stage('sp_atk', -1)
+                elif 'special defense' in effect:
+                    defender.modifiy_stats_stage('sp_def', -1)
+                elif 'speed' in effect:
+                    defender.modifiy_stats_stage('speed', -1)
+                elif 'evasiveness' in effect:
+                    defender.modifiy_stats_stage('evasiveness', -1)
+
+    
+    def print_game_state(self):
+        hp_ratio = self.player_pokemon.curr_hp / self.player_pokemon.base_hp
         filled = int(hp_ratio * 15)
         empty = 15 - filled
-        print(f"{self.opp_pokemon.name.upper()}\t[{'#' * filled}{'-' * empty}] HP {self.opp_pokemon.curr_hp}/{self.opp_pokemon.hp}")
+        print(f"{self.player_pokemon.name.upper()}\t[{'#' * filled}{'-' * empty}] HP {self.player_pokemon.curr_hp}/{self.player_pokemon.base_hp}")
+
+        hp_ratio = self.opp_pokemon.curr_hp / self.opp_pokemon.base_hp
+        filled = int(hp_ratio * 15)
+        empty = 15 - filled
+        print(f"{self.opp_pokemon.name.upper()}\t[{'#' * filled}{'-' * empty}] HP {self.opp_pokemon.curr_hp}/{self.opp_pokemon.base_hp}")
 
 
 

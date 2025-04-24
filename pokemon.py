@@ -21,17 +21,23 @@ class Pokemon:
 
         # STATS
         base_stats = pokemon.base_stats
-        self.hp = base_stats.hp
-        self.attack = base_stats.attack
-        self.defense = base_stats.defense
-        self.sp_atk = base_stats.sp_atk
-        self.sp_def = base_stats.sp_def
-        self.speed = base_stats.speed
-        self.overall_stats = self.hp + self.attack + self.defense + self.sp_atk + self.sp_def + self.speed
+        self.base_hp = base_stats.hp
+        self.base_attack = base_stats.attack
+        self.attack = self.base_attack
+        self.base_defense = base_stats.defense
+        self.defense = self.base_defense
+        self.base_sp_atk = base_stats.sp_atk
+        self.sp_atk = self.base_sp_atk
+        self.base_sp_def = base_stats.sp_def
+        self.sp_def = self.base_sp_def
+        self.base_speed = base_stats.speed
+        self.speed = self.base_speed
+        self.overall_stats = self.base_hp + self.base_attack + self.base_defense + self.base_sp_atk + self.base_sp_def + self.base_speed
+        
         self.is_fainted = False
 
         # BATTLE STATE
-        self.curr_hp = self.hp
+        self.curr_hp = self.base_hp
         self.status_condition = Status.NONE
         self.atk_tier = 0
         self.def_tier = 0
@@ -96,13 +102,82 @@ class Pokemon:
             self.is_fainted = True
             print(f'{self.name.upper()} fainted!')
 
+    def modifiy_stats_stage(self, stat, change):
+        match stat:
+            case 'attack':
+                self.atk_tier += change
+                self.atk_tier = max(-6, self.atk_tier) if self.atk_tier < 0 else min(6, self.atk_tier)
+                self.attack = self.base_attack * self.stats_multiplier(self.atk_tier)
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.attack}')
+            case 'defense':
+                self.def_tier += change
+                self.def_tier = max(-6, self.def_tier) if self.def_tier < 0 else min(6, self.def_tier)
+                self.defense = self.base_defense * self.stats_multiplier(self.def_tier)
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.defense}')
+            case 'sp_atk':
+                self.sp_atk_tier += change
+                self.sp_atk_tier = max(-6, self.sp_atk_tier) if self.sp_atk_tier < 0 else min(6, self.sp_atk_tier)
+                self.sp_atk = self.base_sp_atk * self.stats_multiplier(self.sp_atk_tier)
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_atk}')
+            case 'sp_def':
+                self.sp_def_tier += change
+                self.sp_def_tier = max(-6, self.sp_def_tier) if self.sp_def_tier < 0 else min(6, self.sp_def_tier)
+                self.sp_def = self.base_sp_def * self.stats_multiplier(self.sp_def_tier)
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_def}')
+            case 'speed':
+                self.speed_tier += change
+                self.speed_tier = max(-6, self.speed_tier) if self.speed_tier < 0 else min(6, self.speed_tier)
+                self.speed = self.base_speed * self.stats_multiplier(self.speed_tier)
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.speed}')
+            case 'evasiveness':
+                self.evasiveness_tier += change
+                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.evasiveness_tier}')
+            case _:
+                pass
+
+        # print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'}')
+
+    def stats_multiplier(self, stage):
+        match stage:
+            case 6:
+                multiplier = 4.0
+            case 5:
+                multiplier = 3.5
+            case 4:
+                multiplier = 3.0
+            case 3:
+                multiplier = 2.5
+            case 2:
+                multiplier = 2.0
+            case 1:
+                multiplier = 1.5
+            case 0:
+                multiplier = 1.0
+            case -1:
+                multiplier = 0.67
+            case -2:
+                multiplier = 0.5
+            case -3:
+                multiplier = 0.4
+            case -4:
+                multiplier = 0.33
+            case -5:
+                multiplier = 0.29
+            case -6:
+                multiplier = 0.25
+        
+        return multiplier
+
+
+
+
         
 
     def print_data(self):
         print('===============================================================================')
         print(f'Name: {self.name.upper()}')
         print(f'Types: {' '.join(self.types)}')
-        print(f'Stats: HP:{self.hp} | ATK:{self.attack} | DEF:{self.defense} | SP ATK:{self.sp_atk} | SP DEF:{self.sp_def} | SPEED:{self.speed} | [OVR: {self.overall_stats}]')
+        print(f'Stats: HP:{self.base_hp} | ATK:{self.attack} | DEF:{self.defense} | SP ATK:{self.sp_atk} | SP DEF:{self.sp_def} | SPEED:{self.speed} | [OVR: {self.overall_stats}]')
         print(f'Moves: ', end='')
         for move in self.moves:
             print(f'{move.name.upper()} ', end='')

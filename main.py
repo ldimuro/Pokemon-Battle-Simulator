@@ -5,6 +5,7 @@ import random
 import numpy as np
 import main_helper
 
+# 881140 Caterpie vs Metapod
 main_helper.set_seed(random.randint(0, 1000000))
 
 version = 'red-blue'
