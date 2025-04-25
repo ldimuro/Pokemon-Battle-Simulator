@@ -112,15 +112,15 @@ class Pokemon:
 
     def recover_hp(self, recovered_hp):
         self.curr_hp = min(self.base_hp, np.round(self.curr_hp + recovered_hp, 2))
-        print(f'\t{self.name.upper()} recovered {recovered_hp} HP')
+        print(f'{self.name.upper()} recovered {recovered_hp} HP')
 
     def add_status(self, status, status_count=0):
         if self.status == Status.NONE:
             self.status = status
             self.status_count = status_count
-            print(f'\t{self.name.upper()} has become {self.status.value}!')
+            print(f'{self.name.upper()} has become {self.status.value}!')
         else:
-            print(f'\t{self.name.upper()} is already {self.status.value}')
+            print(f'{self.name.upper()} is already {self.status.value}')
 
     def remove_status(self):
         self.status = Status.NONE
@@ -142,35 +142,35 @@ class Pokemon:
                 self.atk_tier += change
                 self.atk_tier = max(-6, self.atk_tier) if self.atk_tier < 0 else min(6, self.atk_tier)
                 self.attack = np.round(self.base_attack * self.stats_multiplier(self.atk_tier), 2)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.attack}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.attack}')
             case 'defense':
                 self.def_tier += change
                 self.def_tier = max(-6, self.def_tier) if self.def_tier < 0 else min(6, self.def_tier)
                 self.defense = np.round(self.base_defense * self.stats_multiplier(self.def_tier), 2)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.defense}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.defense}')
             case 'sp_atk':
                 self.sp_atk_tier += change
                 self.sp_atk_tier = max(-6, self.sp_atk_tier) if self.sp_atk_tier < 0 else min(6, self.sp_atk_tier)
                 self.sp_atk = np.round(self.base_sp_atk * self.stats_multiplier(self.sp_atk_tier), 2)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_atk}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_atk}')
             case 'sp_def':
                 self.sp_def_tier += change
                 self.sp_def_tier = max(-6, self.sp_def_tier) if self.sp_def_tier < 0 else min(6, self.sp_def_tier)
                 self.sp_def = np.round(self.base_sp_def * self.stats_multiplier(self.sp_def_tier), 2)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_def}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_def}')
             case 'speed':
                 self.speed_tier += change
                 self.speed_tier = max(-6, self.speed_tier) if self.speed_tier < 0 else min(6, self.speed_tier)
                 self.speed = np.round(self.base_speed * self.stats_multiplier(self.speed_tier), 2)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.speed}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.speed}')
             case 'evasiveness':
                 self.evasiveness_tier += change
                 self.evasiveness_tier = max(-6, self.evasiveness_tier) if self.evasiveness_tier < 0 else min(6, self.evasiveness_tier)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.evasiveness_tier}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.evasiveness_tier}')
             case 'accuracy':
                 self.accuracy_tier += change
                 self.accuracy_tier = max(-6, self.accuracy_tier) if self.accuracy_tier < 0 else min(6, self.accuracy_tier)
-                print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.accuracy_tier}')
+                print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.accuracy_tier}')
             case _:
                 pass
 

@@ -21,6 +21,7 @@ for i in range(episodes):
     # 881140 Caterpie vs Metapod
     # 728127 instant Self-Destruct
     # 679815 interesting battle Hitmonlee vs Chansey
+    # 349356 epic comeback Wigglytuff vs Vileplume
     seed = random.randint(0, 1000000)
     main_helper.set_seed(seed)
 

@@ -31,7 +31,7 @@ class BattleEnv:
                 first_pokemon, first_move = self.opp_pokemon, opp_move
                 second_pokemon, second_move = self.player_pokemon, player_move
 
-            print(f'=-=-=-=-=-=-=-=|TURN {turn}|=-=-=-=-=-=-=-=')
+            print(f'=====================|TURN {turn}|=====================')
             self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
@@ -39,17 +39,22 @@ class BattleEnv:
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = self.apply_status_effects(first_pokemon)
 
+            if first_pokemon.is_fainted:
+                break
+
             # First Move
             if not has_lost_turn:
                 self.execute_move(first_move, first_pokemon, second_pokemon)
 
-            if second_pokemon.is_fainted:
-                break
+            self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
 
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = self.apply_status_effects(second_pokemon)
+
+            if second_pokemon.is_fainted:
+                break
 
             # Second Move
             if not has_lost_turn:
@@ -57,6 +62,7 @@ class BattleEnv:
 
             turn += 1
             
+        self.print_game_state()
 
         winner = self.player_pokemon if self.player_pokemon.curr_hp > 0 else self.opp_pokemon
         print(f'{winner.name.upper()} HAS WON THE BATTLE!')
@@ -89,13 +95,13 @@ class BattleEnv:
                         if 'may' in move.effect:
                             print('\tHANDLE MAY CASES')
                         
-                        if 'recover' in move.effect:
-                            if 'inflicted' in move.effect:
-                                # ADD CASE FOR DREAM EATER
-                                #if move.name == 'dream-eater' and defender.status_condition == Status.ASLEEP
-                                attacker.recover_hp(np.round(damage/2, 2))
-                            elif 'max hp' in move.effect:
-                                attacker.recover_hp(np.round(attacker.base_hp/2, 2))
+                    if 'recover' in move.effect:
+                        if 'inflicted' in move.effect:
+                            # ADD CASE FOR DREAM EATER
+                            #if move.name == 'dream-eater' and defender.status_condition == Status.ASLEEP
+                            attacker.recover_hp(np.round(damage/2, 2))
+                        elif 'max hp' in move.effect:
+                            attacker.recover_hp(np.round(attacker.base_hp/2, 2))
 
 
                 case 'status':
@@ -215,9 +221,9 @@ class BattleEnv:
                 pokemon.remove_confused()
                 print(f'{pokemon.name.upper()} snapped out of confusion!')
             else:
-                print(f'\t{pokemon.name.upper()} is confused')
+                print(f'{pokemon.name.upper()} is confused')
                 if random.random() <= 0.5:
-                    print(f'\t{pokemon.name.upper()} hurt itself in it\'s confusion')
+                    print(f'{pokemon.name.upper()} hurt itself in it\'s confusion')
                     confusion_damage_move = Move(
                         name='confusion-damage',
                         type='*',
@@ -243,18 +249,18 @@ class BattleEnv:
                 if pokemon.curr_status_count == pokemon.status_count:
                     lose_turn = False
                     pokemon.remove_status()
-                    print(f'\t{pokemon.name.upper()} woke up!')
+                    print(f'{pokemon.name.upper()} woke up!')
                 else:
                     pokemon.curr_status_count += 1
                     lose_turn = True
-                    print(f'\t{pokemon.name.upper()} is asleep')
+                    print(f'{pokemon.name.upper()} is asleep')
             case Status.POISONED:
                 pokemon.reduce_hp(pokemon.base_hp/16)
-                print(f'\t{pokemon.name.upper()} was hurt by poison')
+                print(f'{pokemon.name.upper()} was hurt by poison ({np.round(pokemon.base_hp/16, 2)} Damage)')
             case Status.BURNED:
                 pokemon.attack *= 0.5
                 pokemon.reduce_hp(pokemon.base_hp/16)
-                print(f'\t{pokemon.name.upper()} was hurt by its burn')
+                print(f'{pokemon.name.upper()} was hurt by its burn')
             case Status.FROZEN:
                 lose_turn = True
                 print(f'{pokemon.name.upper()} is frozen. It can\'t move!')
