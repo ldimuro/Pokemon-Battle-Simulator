@@ -213,16 +213,36 @@ class Pokemon:
         
 
     def print_data(self):
-        print('===============================================================================')
-        print(f'Name: {self.name.upper()}')
-        print(f'Types: {' '.join(self.types)}')
-        print(f'Stats: HP:{self.base_hp} | ATK:{self.attack} | DEF:{self.defense} | SP ATK:{self.sp_atk} | SP DEF:{self.sp_def} | SPEED:{self.speed} | [OVR: {self.overall_stats}]')
-        print(f'Moves: ', end='')
+        type_icon = {
+            'normal': '⚪️',
+            'fire': '🔥',
+            'water': '💧',
+            'electric': '⚡️',
+            'grass': '🌿',
+            'ice': '❄️',
+            'fighting': '👊',
+            'poison': '☠️',
+            'ground': '🟤',
+            'flying': '🪽',
+            'psychic': '👁️',
+            'bug': '🪲',
+            'rock': '🪨',
+            'ghost': '👻',
+            'dragon': '🐲',
+            'dark': '⚫️',
+            'steel': '🩶',
+            'fairy': '🦄'
+        }
+
+        # print('===============================================================================')
+        print(f'{self.name.upper()}', end='')
+        for type in self.types:
+            print(f'{type_icon[type]} ', end='')
+        print(' [', end='')
         for move in self.moves:
             print(f'{move.name.upper()} ', end='')
-        print()
-        print(f'Abilities: {' '.join(self.abilities)}')
-        print('===============================================================================')
+        print(f'] [HP:{self.base_hp} | ATK:{self.attack} | DEF:{self.defense} | SP ATK:{self.sp_atk} | SP DEF:{self.sp_def} | SPEED:{self.speed} | [OVR: {self.overall_stats}]]')
+        # print('===============================================================================')
 
     def show_sprite(self):
         sprite_url = self.sprites[0]['default']
