@@ -292,7 +292,7 @@ class BattleEnv:
 
         status = status_icon['confused'] if self.player_pokemon.is_confused else '' + status_icon[self.player_pokemon.status]
 
-        print(f"{self.player_pokemon.name.upper()}{status}\t[{'#' * filled}{'-' * empty}] HP {self.player_pokemon.curr_hp}/{self.player_pokemon.base_hp}")
+        print(f"{self.player_pokemon.name.upper():<12}\t[{'█' * filled}{'-' * empty}] {status} HP {self.player_pokemon.curr_hp}/{self.player_pokemon.base_hp}")
 
         hp_ratio = self.opp_pokemon.curr_hp / self.opp_pokemon.base_hp
         filled = int(hp_ratio * 15)
@@ -300,7 +300,7 @@ class BattleEnv:
 
         status = status_icon['confused'] if self.opp_pokemon.is_confused else '' + status_icon[self.opp_pokemon.status]
 
-        print(f"{self.opp_pokemon.name.upper()}{status}\t[{'#' * filled}{'-' * empty}] HP {self.opp_pokemon.curr_hp}/{self.opp_pokemon.base_hp}")
+        print(f"{self.opp_pokemon.name.upper():<12}\t[{'█' * filled}{'-' * empty}] {status} HP {self.opp_pokemon.curr_hp}/{self.opp_pokemon.base_hp}")
 
 
 
