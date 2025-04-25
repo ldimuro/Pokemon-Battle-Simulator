@@ -36,9 +36,16 @@ class Pokemon:
         
         self.is_fainted = False
 
+        self.is_confused = False
+        self.confused_count = 0
+        self.curr_confused_count = 0
+
+        self.status_count = 0
+        self.curr_status_count = 0
+
         # BATTLE STATE
         self.curr_hp = self.base_hp
-        self.status_condition = Status.NONE
+        self.status = Status.NONE
         self.atk_tier = 0
         self.def_tier = 0
         self.sp_atk_tier = 0
@@ -107,32 +114,54 @@ class Pokemon:
         self.curr_hp = min(self.base_hp, np.round(self.curr_hp + recovered_hp, 2))
         print(f'\t{self.name.upper()} recovered {recovered_hp} HP')
 
+    def add_status(self, status, status_count=0):
+        self.status_count = status_count
+        if self.status == Status.NONE:
+            self.status = status
+            print(f'\t{self.name.upper()} has become {self.status.value}!')
+        else:
+            print(f'\t{self.name.upper()} is already {self.status.value}')
+
+    def remove_status(self):
+        self.status = Status.NONE
+        self.status_count = 0
+        self.curr_status_count = 0
+
+    def add_confused(self, status_count):
+        self.is_confused = True
+        self.confused_count = status_count
+
+    def remove_confused(self):
+        self.is_confused = False
+        self.confused_count = 0
+        self.curr_confused_count = 0
+
     def modifiy_stats_stage(self, stat, change):
         match stat:
             case 'attack':
                 self.atk_tier += change
                 self.atk_tier = max(-6, self.atk_tier) if self.atk_tier < 0 else min(6, self.atk_tier)
-                self.attack = self.base_attack * self.stats_multiplier(self.atk_tier)
+                self.attack = np.round(self.base_attack * self.stats_multiplier(self.atk_tier), 2)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.attack}')
             case 'defense':
                 self.def_tier += change
                 self.def_tier = max(-6, self.def_tier) if self.def_tier < 0 else min(6, self.def_tier)
-                self.defense = self.base_defense * self.stats_multiplier(self.def_tier)
+                self.defense = np.round(self.base_defense * self.stats_multiplier(self.def_tier), 2)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.defense}')
             case 'sp_atk':
                 self.sp_atk_tier += change
                 self.sp_atk_tier = max(-6, self.sp_atk_tier) if self.sp_atk_tier < 0 else min(6, self.sp_atk_tier)
-                self.sp_atk = self.base_sp_atk * self.stats_multiplier(self.sp_atk_tier)
+                self.sp_atk = np.round(self.base_sp_atk * self.stats_multiplier(self.sp_atk_tier), 2)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_atk}')
             case 'sp_def':
                 self.sp_def_tier += change
                 self.sp_def_tier = max(-6, self.sp_def_tier) if self.sp_def_tier < 0 else min(6, self.sp_def_tier)
-                self.sp_def = self.base_sp_def * self.stats_multiplier(self.sp_def_tier)
+                self.sp_def = np.round(self.base_sp_def * self.stats_multiplier(self.sp_def_tier), 2)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.sp_def}')
             case 'speed':
                 self.speed_tier += change
                 self.speed_tier = max(-6, self.speed_tier) if self.speed_tier < 0 else min(6, self.speed_tier)
-                self.speed = self.base_speed * self.stats_multiplier(self.speed_tier)
+                self.speed = np.round(self.base_speed * self.stats_multiplier(self.speed_tier), 2)
                 print(f'\t{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'} to {self.speed}')
             case 'evasiveness':
                 self.evasiveness_tier += change
