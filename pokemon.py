@@ -13,7 +13,7 @@ class Pokemon:
 
         self.id = pokemon.dex
         self.name = pokemon.name
-        self.level = 50
+        self.level = random.randint(25, 50)#50
         self.height = pokemon.height
         self.weight = pokemon.weight
         self.types = pokemon.types

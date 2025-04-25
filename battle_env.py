@@ -31,7 +31,7 @@ class BattleEnv:
                 first_pokemon, first_move = self.opp_pokemon, opp_move
                 second_pokemon, second_move = self.player_pokemon, player_move
 
-            print(f'=====================|TURN {turn}|=====================')
+            print(f'============================|TURN {turn}|============================')
             self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
@@ -46,7 +46,6 @@ class BattleEnv:
             if not has_lost_turn:
                 self.execute_move(first_move, first_pokemon, second_pokemon)
 
-            self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
 
@@ -55,6 +54,8 @@ class BattleEnv:
 
             if second_pokemon.is_fainted:
                 break
+
+            self.print_game_state()
 
             # Second Move
             if not has_lost_turn:
@@ -97,6 +98,7 @@ class BattleEnv:
                         
                     if 'recover' in move.effect:
                         if 'inflicted' in move.effect:
+                            
                             # ADD CASE FOR DREAM EATER
                             #if move.name == 'dream-eater' and defender.status_condition == Status.ASLEEP
                             attacker.recover_hp(np.round(damage/2, 2))
@@ -128,14 +130,14 @@ class BattleEnv:
             damage = np.round(base * stab * type_effect * random_val, 2)
         else:
             damage = damage_override
-        print('\tDAMAGE: ', damage)
+        print('DAMAGE: ', damage)
 
         if type_effect >= 2.0:
-            print('\tIt\'s super effective!')
+            print('It\'s super effective!')
         elif type_effect == 0.5:
-            print('\tIt\'s not very effective')
+            print('It\'s not very effective')
         elif type_effect == 0:
-            print('\tIt has no effect')
+            print('It has no effect')
 
         return damage
     
@@ -295,18 +297,20 @@ class BattleEnv:
         hp_ratio = self.player_pokemon.curr_hp / self.player_pokemon.base_hp
         filled = int(hp_ratio * 15)
         empty = 15 - filled
+        name = self.player_pokemon.name.upper() + ' lvl' + str(self.player_pokemon.level)
 
         status = status_icon['confused'] if self.player_pokemon.is_confused else '' + status_icon[self.player_pokemon.status]
 
-        print(f"{self.player_pokemon.name.upper():<12}\t[{'█' * filled}{'-' * empty}] {status} HP {self.player_pokemon.curr_hp}/{self.player_pokemon.base_hp}")
+        print(f"{name:<20}\t[{'█' * filled}{'-' * empty}] {status} HP {self.player_pokemon.curr_hp}/{self.player_pokemon.base_hp}")
 
         hp_ratio = self.opp_pokemon.curr_hp / self.opp_pokemon.base_hp
         filled = int(hp_ratio * 15)
         empty = 15 - filled
+        name = self.opp_pokemon.name.upper() + ' lvl' + str(self.opp_pokemon.level)
 
         status = status_icon['confused'] if self.opp_pokemon.is_confused else '' + status_icon[self.opp_pokemon.status]
 
-        print(f"{self.opp_pokemon.name.upper():<12}\t[{'█' * filled}{'-' * empty}] {status} HP {self.opp_pokemon.curr_hp}/{self.opp_pokemon.base_hp}")
+        print(f"{name:<20}\t[{'█' * filled}{'-' * empty}] {status} HP {self.opp_pokemon.curr_hp}/{self.opp_pokemon.base_hp}")
 
 
 
