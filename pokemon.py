@@ -41,7 +41,7 @@ class Pokemon:
         self.curr_confused_count = 0
 
         self.status_count = 0
-        self.curr_status_count = 0
+        self.curr_status_count = 1
 
         # BATTLE STATE
         self.curr_hp = self.base_hp
@@ -115,9 +115,9 @@ class Pokemon:
         print(f'\t{self.name.upper()} recovered {recovered_hp} HP')
 
     def add_status(self, status, status_count=0):
-        self.status_count = status_count
         if self.status == Status.NONE:
             self.status = status
+            self.status_count = status_count
             print(f'\t{self.name.upper()} has become {self.status.value}!')
         else:
             print(f'\t{self.name.upper()} is already {self.status.value}')

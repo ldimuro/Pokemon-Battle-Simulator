@@ -124,7 +124,7 @@ class BattleEnv:
             damage = damage_override
         print('\tDAMAGE: ', damage)
 
-        if type_effect == 2.0:
+        if type_effect >= 2.0:
             print('\tIt\'s super effective!')
         elif type_effect == 0.5:
             print('\tIt\'s not very effective')
@@ -239,7 +239,7 @@ class BattleEnv:
                     lose_turn = True
                     print(f'{pokemon.name.upper()} is paralyzed. It can\'t move!')
             case Status.ASLEEP:
-                pokemon.status_count += 1
+                # print(f'curr status_count: {pokemon.curr_status_count}, status_count: {pokemon.status_count}')
                 if pokemon.curr_status_count == pokemon.status_count:
                     lose_turn = False
                     pokemon.remove_status()
