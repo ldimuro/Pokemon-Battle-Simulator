@@ -22,7 +22,7 @@ for i in range(episodes):
     # 728127 instant Self-Destruct
     # 679815 interesting battle Hitmonlee vs Chansey
     # 349356 epic comeback Wigglytuff vs Vileplume
-    seed = random.randint(0, 1000000)
+    seed = 438520#random.randint(0, 1000000)
     main_helper.set_seed(seed)
 
     agent_pokemon = Pokemon(random.randint(1, 151), version) # 4 for charmander
