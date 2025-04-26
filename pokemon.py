@@ -128,8 +128,11 @@ class Pokemon:
         self.curr_status_count = 0
 
     def add_confused(self, status_count):
-        self.is_confused = True
-        self.confused_count = status_count
+        if not self.is_confused:
+            self.is_confused = True
+            self.confused_count = status_count
+        else:
+            print(f'{self.name.upper()} is already confused!')
 
     def remove_confused(self):
         self.is_confused = False

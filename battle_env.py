@@ -31,7 +31,7 @@ class BattleEnv:
                 first_pokemon, first_move = self.opp_pokemon, opp_move
                 second_pokemon, second_move = self.player_pokemon, player_move
 
-            print(f'============================|TURN {turn}|============================')
+            print(f'=============================|TURN {turn}|=============================')
             self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
@@ -176,7 +176,7 @@ class BattleEnv:
                 elif 'accuracy' in effect:
                     defender.modifiy_stats_stage('accuracy', -2)
             elif 'raises' in effect:
-                if 'attack' in effect:
+                if 'attack' in effect and 'special attack' not in effect:
                     attacker.modifiy_stats_stage('attack', 1)
                 elif 'defense' in effect and 'special defense' not in effect:
                     attacker.modifiy_stats_stage('defense', 1)
@@ -205,7 +205,7 @@ class BattleEnv:
                     defender.modifiy_stats_stage('evasiveness', -1)
                 elif 'accuracy' in effect:
                     defender.modifiy_stats_stage('accuracy', -1)
-            elif 'confuses' in effect:
+            elif 'confuses' in effect: 
                 defender.add_confused(random.randint(2, 5))
             elif 'paralyzes' in effect:
                 defender.add_status(Status.PARALYZED)
@@ -213,6 +213,12 @@ class BattleEnv:
                 defender.add_status(Status.ASLEEP, status_count=random.randint(1,7))
             elif 'poisons' in effect:
                 defender.add_status(Status.POISONED)
+            elif 'recover' in move.effect: # RECOVER, SOFT-BOILED
+                if 'max hp' in move.effect:
+                    attacker.recover_hp(np.round(attacker.base_hp/2, 2))
+            elif 'user sleeps' in move.effect: # REST
+                attacker.add_status(Status.ASLEEP, 2)
+                attacker.recover_hp(attacker.base_hp - attacker.curr_hp)
 
     def apply_status_effects(self, pokemon: Pokemon):
         lose_turn = False
@@ -249,7 +255,6 @@ class BattleEnv:
             case Status.ASLEEP:
                 # print(f'curr status_count: {pokemon.curr_status_count}, status_count: {pokemon.status_count}')
                 if pokemon.curr_status_count == pokemon.status_count:
-                    lose_turn = False
                     pokemon.remove_status()
                     print(f'{pokemon.name.upper()} woke up!')
                 else:
@@ -295,8 +300,8 @@ class BattleEnv:
         }
         
         hp_ratio = self.player_pokemon.curr_hp / self.player_pokemon.base_hp
-        filled = int(hp_ratio * 15)
-        empty = 15 - filled
+        filled = int(hp_ratio * 16)
+        empty = 16 - filled
         name = self.player_pokemon.name.upper() + ' lvl' + str(self.player_pokemon.level)
 
         status = status_icon['confused'] if self.player_pokemon.is_confused else '' + status_icon[self.player_pokemon.status]
@@ -304,8 +309,8 @@ class BattleEnv:
         print(f"{name:<20}\t[{'█' * filled}{'-' * empty}] {status} HP {self.player_pokemon.curr_hp}/{self.player_pokemon.base_hp}")
 
         hp_ratio = self.opp_pokemon.curr_hp / self.opp_pokemon.base_hp
-        filled = int(hp_ratio * 15)
-        empty = 15 - filled
+        filled = int(hp_ratio * 16)
+        empty = 16 - filled
         name = self.opp_pokemon.name.upper() + ' lvl' + str(self.opp_pokemon.level)
 
         status = status_icon['confused'] if self.opp_pokemon.is_confused else '' + status_icon[self.opp_pokemon.status]
