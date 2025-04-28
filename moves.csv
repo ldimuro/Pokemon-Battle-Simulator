@@ -164,3 +164,4 @@ whirlwind,normal,-1,-1,status,20,in battles, the opponent switches in the wild, 
 wing-attack,flying,60,100,physical,35,none
 withdraw,water,-1,-1,status,40,raises user's defense
 wrap,normal,15,90,physical,20,traps opponent, damaging them for 4-5 turns
+confusion_damage,*,40,100,physical,50,confusion damage

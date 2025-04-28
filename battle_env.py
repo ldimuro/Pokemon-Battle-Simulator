@@ -142,7 +142,7 @@ class BattleEnv:
         return damage
     
     def calculate_status(self, move: Move, attacker: Pokemon, defender: Pokemon):
-        effect_segments = move.effect.split('and')
+        effect_segments = move.effect.split('and') # doesnt work
 
         for effect in effect_segments:
             if 'sharply raises' in effect:
@@ -223,11 +223,11 @@ class BattleEnv:
     def apply_status_effects(self, pokemon: Pokemon):
         lose_turn = False
 
+        # Handle confusion functionality
         if pokemon.is_confused:
             pokemon.confused_count += 1
             if pokemon.curr_confused_count == pokemon.confused_count:
                 pokemon.remove_confused()
-                print(f'{pokemon.name.upper()} snapped out of confusion!')
             else:
                 print(f'{pokemon.name.upper()} is confused')
                 if random.random() <= 0.5:
@@ -245,6 +245,7 @@ class BattleEnv:
                     pokemon.reduce_hp(confusion_damage)
                     lose_turn = True
 
+        # Handle all other status conditions
         match pokemon.status:
             case Status.PARALYZED:
                 print(f'{pokemon.name.upper()} is paralyzed')

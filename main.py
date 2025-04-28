@@ -24,6 +24,7 @@ for i in range(episodes):
     # 349356 epic comeback Wigglytuff vs Vileplume
     # 98368  weird out-of-order effect with confusion and fainting
     # 557439 weird out-of-order effect with poisoning and fainting
+    # 398256 vileplume never snaps out of confusion
     seed = random.randint(0, 1000000)
     main_helper.set_seed(seed)
 

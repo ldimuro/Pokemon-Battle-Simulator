@@ -112,7 +112,7 @@ class Pokemon:
 
     def recover_hp(self, recovered_hp):
         self.curr_hp = min(self.base_hp, np.round(self.curr_hp + recovered_hp, 2))
-        print(f'{self.name.upper()} recovered {recovered_hp} HP')
+        print(f'{self.name.upper()} recovered {np.round(recovered_hp, 2)} HP')
 
     def add_status(self, status, status_count=0):
         if self.status == Status.NONE:
@@ -131,6 +131,7 @@ class Pokemon:
         if not self.is_confused:
             self.is_confused = True
             self.confused_count = status_count
+            print(f'{self.name.upper()} became confusion!')
         else:
             print(f'{self.name.upper()} is already confused!')
 
@@ -138,6 +139,7 @@ class Pokemon:
         self.is_confused = False
         self.confused_count = 0
         self.curr_confused_count = 0
+        print(f'{self.name.upper()} snapped out of confusion!')
 
     def modifiy_stats_stage(self, stat, change):
         match stat:
@@ -180,40 +182,13 @@ class Pokemon:
         # print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'}')
 
     def stats_multiplier(self, stage):
-        match stage:
-            case 6:
-                multiplier = 4.0
-            case 5:
-                multiplier = 3.5
-            case 4:
-                multiplier = 3.0
-            case 3:
-                multiplier = 2.5
-            case 2:
-                multiplier = 2.0
-            case 1:
-                multiplier = 1.5
-            case 0:
-                multiplier = 1.0
-            case -1:
-                multiplier = 0.67
-            case -2:
-                multiplier = 0.5
-            case -3:
-                multiplier = 0.4
-            case -4:
-                multiplier = 0.33
-            case -5:
-                multiplier = 0.29
-            case -6:
-                multiplier = 0.25
+        stage_multipliers = { 
+            6: 4.0, 5: 3.5, 4: 3.0, 3: 2.5, 2: 2.0, 1: 1.5, 0: 1.0, 
+            -1: 0.67, -2: 0.5, -3: 0.4, -4: 0.33, -5: 0.29, -6: 0.25
+        }
         
-        return multiplier
+        return stage_multipliers[stage]
 
-
-
-
-        
 
     def print_data(self):
         type_icon = {
