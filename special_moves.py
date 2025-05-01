@@ -3,6 +3,7 @@ from moves import Move
 import random
 import numpy as np
 import pandas as pd
+from pokemon_enums import Status
 
 '''
 
@@ -207,146 +208,242 @@ import pandas as pd
 
 def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
-    if 'none' in move.name:
+    if 'none' in move.effect:
         print('no special effects')
         damage = calculate_damage(move, attacker, defender)
         defender.reduce_hp(damage)
         return
+    
+
+    damage = calculate_damage(move, attacker, defender)
+    
+
+    if 'may' in move.effect:
+        if 'lower':
+            if random.random() <= 0.1:
+                handle_stat_change(move, defender, -1)
+
+        if 'raise' in move.effect:
+            if random.random() <= 0.1:
+                handle_stat_change(move, attacker, 1)
+
+        if 'paralyze, burn, or freeze' in move.effect:
+            if random.random() <= 0.2:
+                defender.add_status(random.choice([Status.PARALYZED, Status.BURNED, Status.FROZEN]))
+                return
+
+        if 'flinching' in move.effect:
+            print('TODO: may cause flinching')
+            pass
+
+        if 'freeze' in move.effect:
+            if random.random() <= 0.1:
+                defender.add_status(Status.FROZEN)
+
+        if 'paralze' in move.effect:
+            if move.name == 'thunder' or move.name == 'body-slam':
+                if random.random() <= 0.3:
+                    defender.add_status(Status.PARALYZED)
+            else:
+                if random.random() <= 0.1:
+                    defender.add_status(Status.PARALYZED)
+
+        if 'confuse' in move.effect:
+            if move.name == 'dizzy-punch':
+                if random.random() <= 0.2:
+                    defender.add_confused(random.randint(2, 5))
+            else:
+                if random.random() <= 0.1:
+                    defender.add_confused(random.randint(2, 5))
+
+        if 'burn' in move.effect:
+            if random.random() <= 0.1:
+                defender.add_status(Status.BURNED)
+
+        if 'poison' in move.effect:
+            if move.name == 'twineedle':
+                if random.random() <= 0.2:
+                    defender.add_status(Status.POISONED)
+            elif move.name == 'smog':
+                if random.random() <= 0.4:
+                    defender.add_status(Status.POISONED)
+            else:
+                if random.random() <= 0.3:
+                    defender.add_status(Status.POISONED)
 
 
-    if 'may' in move.name:
+    if 'raises' in move.effect and not 'sharply raises' in move.effect:
+        handle_stat_change(move, attacker, 1)
+
+    if 'lowers' in move.effect and not 'sharply lowers' in move.effect:
+        handle_stat_change(move, defender, -1)
+
+    if 'sharply raises' in move.effect:
+        handle_stat_change(move, attacker, 2)
+
+    if 'sharply lowers' in move.effect:
+        handle_stat_change(move, defender, -2)
+
+    if 'confuses' in move.effect:
+        defender.add_confused(random.randint(2, 5))
+
+    if 'paralyzes' in move.effect:
+        defender.add_status(Status.PARALYZED)
+
+    if 'opponents to sleep' in move.effect:
+        defender.add_status(Status.ASLEEP, status_count=random.randint(1,7))
+
+    if 'poisons' in move.effect:
+        defender.add_status(Status.POISONED)
+
+    if 'badly poisons' in move.effect:
+        print('TODO: badly poisons')
         pass
 
-    if 'raises' in move.name and not 'sharply raises' in move.name:
+    if 'user sleeps' in move.effect:
+        if attacker.status is not Status.NONE:
+            attacker.remove_status()
+            
+        attacker.add_status(Status.ASLEEP, 2)
+        attacker.recover_hp(attacker.base_hp - attacker.curr_hp)
+
+    if 'recovers' in move.effect:
+        if 'half the hp inflicted' in move.effect:
+            if 'sleeping' in move.effect:
+                if defender.status == Status.ASLEEP:
+                    attacker.recover_hp(np.round(damage/2, 2))
+                else:
+                    print('the move had no effect')
+            else:
+                attacker.recover_hp(np.round(damage/2, 2))
+         
+        if 'max hp' in move.effect:
+            attacker.recover_hp(np.round(attacker.base_hp/2, 2))
+
+    if 'drains hp' in move.effect:
         pass
 
-    if 'lowers' in move.name and not 'sharply lowers' in move.name:
+    if 'traps' in move.effect:
         pass
 
-    if 'sharply raises' in move.name:
+    if 'next turn' in move.effect:
         pass
 
-    if 'sharply lowers' in move.name:
+    if 'on first turn' in move.effect and 'attacks on second' in move.effect:
         pass
 
-    if 'confuses' in move.name:
+    if 'critical hit ratio' in move.effect:
         pass
 
-    if 'paralyzes' in move.name:
+    if 'hits' in move.effect and 'in one turn' in move.effect:
         pass
 
-    if 'opponents to sleep' in move.name:
+    if 'ignores' in move.effect:
         pass
 
-    if 'poisons' in move.name:
+    if 'user attacks first' in move.effect:
         pass
 
-    if 'badly poisons' in move.name:
+    if 'when hit' in move.effect:
         pass
 
-    if 'user sleeps' in move.name:
+    if 'last' in move.effect:
         pass
 
-    if 'recovers' in move.name:
+    if 'resets' in move.effect:
         pass
 
-    if 'drains hp' in move.name:
+    if 'recoil' in move.effect:
+        recoil_damage = np.floor(damage / 4)
+        attacker.reduce_hp(recoil_damage)
+        print(f'{attacker.name.upper()} took recoil damage')
+
+    if 'user takes damage for two turns then strikes back double' in move.effect:
         pass
 
-    if 'traps' in move.name:
+    if 'power is doubled if' in move.effect or 'power doubles if' in move.effect or 'doubles in power' in move.effect or 'double power' in move.effect:
         pass
 
-    if 'next turn' in move.name:
+    if 'user\'s type' in move.effect:
         pass
 
-    if 'on first turn' in move.name and 'attacks on second' in move.name:
+    if 'always inflicts' in move.effect:
         pass
 
-    if 'critical hit ratio' in move.name:
+    if 'inflicts damage' in move.effect:
+        if f'50-150% of user\'s level':
+            pass
+
+        if 'equal to the user\'s remaining HP':
+            pass
+
+        if 'equal to user\'s level':
+            damage = calculate_damage(move, attacker, defender, damage_override=attacker.level)
+            defender.reduce_hp(damage)
+
+        if 'based on the target\'s defense, not special defense':
+            pass
+
+        if 'on contact':
+            pass
+
+    if 'inflicts double damage' in move.effect:
         pass
 
-    if 'hits' in move.name and 'in one turn' in move.name:
+    if 'faints' in move.effect:
         pass
 
-    if 'ignores' in move.name:
+    if 'one-hit ko' in move.effect:
+        damage = defender.curr_hp
+        print(f'{defender.name.upper()} was one-hit KO\'d!')
+
+    if 'if it misses' in move.effect:
         pass
 
-    if 'user attacks first' in move.name:
+    if 'halves' in move.effect:
         pass
 
-    if 'when hit' in move.name:
+    if 'the heavier' in move.effect:
         pass
 
-    if 'last' in move.name:
+    if 'random' in move.effect:
         pass
 
-    if 'resets' in move.name:
+    if 'stats cannot be changed' in move.effect:
         pass
 
-    if 'recoil' in move.name:
+    if 'user attacks for 2-3 turns' in move.effect or 'user attacks for 3 turns' in move.effect:
         pass
 
-    if 'user takes damage for two turns then strikes back double' in move.name:
+    if 'the opponent switches' in move.effect:
         pass
 
-    if 'power is doubled if' in move.name or 'power doubles if' in move.name or 'doubles in power' in move.name or 'double power' in move.name:
+    if 'doesnt do anything' in move.effect or 'warps player to last pokécenter' in move.effect:
+        damage = 0
+        print('nothing happened')
+
+    if 'decoy' in move.effect:
         pass
 
-    if 'user\'s type' in move.name:
-        pass
+    if 'always takes off half of the opponent\'s hp' in move.effect:
+        damage = defender.curr_hp / 2
 
-    if 'always inflicts' in move.name:
-        pass
+    if 'user takes on the form and attacks of the opponent' in move.effect:
+        attacker.moves = defender.moves
+        attacker.types = defender.types
+        print(f'{attacker.name.upper()} became type(s) {defender.moves} with moves {defender.moves}')
 
-    if 'inflicts damage' in move.name:
-        pass
 
-    if 'inflicts double damage' in move.name:
-        pass
+    defender.reduce_hp(damage)
 
-    if 'faints' in move.name:
-        pass
+    
 
-    if 'one-hit ko' in move.name:
-        pass
-
-    if 'if it misses' in move.name:
-        pass
-
-    if 'halves':
-        pass
-
-    if 'the heavier':
-        pass
-
-    if 'random':
-        pass
-
-    if 'stats cannot be changed':
-        pass
-
-    if 'user attacks for 2-3 turns' in move.name or 'user attacks for 3 turns' in move.name:
-        pass
-
-    if 'the opponent switches' in move.name:
-        pass
-
-    if 'doesnt do anything' in move.name or 'warps player to last pokécenter' in move.name:
-        pass
-
-    if 'decoy' in move.name:
-        pass
-
-    if 'always takes off half of the opponent\'s hp' in move.name:
-        pass
-
-    if 'user takes on the form and attacks of the opponent' in move.name:
-        pass
+    return
 
 
 
 
-def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon, damage_override=-1):
+def calculate_damage(move: Move, attacker: Pokemon, defender: Pokemon, damage_override=0):
     type_effectivenss_chart = pd.read_csv('type_effectiveness.csv', index_col=0)
     a = attacker.sp_atk if move.category == 'special' else attacker.attack
     d = defender.sp_def if move.category == 'special' else defender.defense
@@ -359,10 +456,15 @@ def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon, dam
     level_factor = (((2 * attacker.level * attacker.crit_ratio) / 5) + 2)
     base = ((level_factor * move.power * (a / d)) / 50) + 2
 
-    if damage_override == -1:
-        damage = np.round(base * stab * type_effect * random_val, 2)
+    if move.power == -1:
+        damage = 0
     else:
+        damage = np.round(base * stab * type_effect * random_val, 2)
+
+    if damage_override > 0:
         damage = damage_override
+    
+        
     print('DAMAGE: ', damage)
 
     if type_effect >= 2.0:
@@ -373,3 +475,26 @@ def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon, dam
         print('It has no effect')
 
     return damage
+
+
+def handle_stat_change(move: Move, pokemon: Pokemon, change):
+    if 'attack' in move.effect and 'special attack' not in move.effect:
+        pokemon.modifiy_stats_stage('attack', change)
+
+    if 'special attack' in move.effect:
+        pokemon.modifiy_stats_stage('sp_atk', change)
+
+    if 'defense' in move.effect and not 'special defense' in move.effect:
+        pokemon.modifiy_stats_stage('defense', change)
+
+    if 'special defense' in move.effect:
+        pokemon.modifiy_stats_stage('sp_def', change)
+
+    if 'speed' in move.effect:
+        pokemon.modifiy_stats_stage('speed', change)
+
+    if 'accuracy' in move.effect:
+        pokemon.modifiy_stats_stage('accuracy', change)
+
+    if 'evasiveness' in move.effect:
+        pokemon.modifiy_stats_stage('evasiveness', change)
