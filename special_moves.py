@@ -1,10 +1,8 @@
-# 'may'
-
-# 'recovers'
-#   - inflicted, max hp
-
-# 'traps
-
+from pokemon import Pokemon
+from moves import Move
+import random
+import numpy as np
+import pandas as pd
 
 '''
 
@@ -207,3 +205,171 @@
 
 '''
 
+def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
+
+    if 'none' in move.name:
+        print('no special effects')
+        damage = calculate_damage(move, attacker, defender)
+        defender.reduce_hp(damage)
+        return
+
+
+    if 'may' in move.name:
+        pass
+
+    if 'raises' in move.name and not 'sharply raises' in move.name:
+        pass
+
+    if 'lowers' in move.name and not 'sharply lowers' in move.name:
+        pass
+
+    if 'sharply raises' in move.name:
+        pass
+
+    if 'sharply lowers' in move.name:
+        pass
+
+    if 'confuses' in move.name:
+        pass
+
+    if 'paralyzes' in move.name:
+        pass
+
+    if 'opponents to sleep' in move.name:
+        pass
+
+    if 'poisons' in move.name:
+        pass
+
+    if 'badly poisons' in move.name:
+        pass
+
+    if 'user sleeps' in move.name:
+        pass
+
+    if 'recovers' in move.name:
+        pass
+
+    if 'drains hp' in move.name:
+        pass
+
+    if 'traps' in move.name:
+        pass
+
+    if 'next turn' in move.name:
+        pass
+
+    if 'on first turn' in move.name and 'attacks on second' in move.name:
+        pass
+
+    if 'critical hit ratio' in move.name:
+        pass
+
+    if 'hits' in move.name and 'in one turn' in move.name:
+        pass
+
+    if 'ignores' in move.name:
+        pass
+
+    if 'user attacks first' in move.name:
+        pass
+
+    if 'when hit' in move.name:
+        pass
+
+    if 'last' in move.name:
+        pass
+
+    if 'resets' in move.name:
+        pass
+
+    if 'recoil' in move.name:
+        pass
+
+    if 'user takes damage for two turns then strikes back double' in move.name:
+        pass
+
+    if 'power is doubled if' in move.name or 'power doubles if' in move.name or 'doubles in power' in move.name or 'double power' in move.name:
+        pass
+
+    if 'user\'s type' in move.name:
+        pass
+
+    if 'always inflicts' in move.name:
+        pass
+
+    if 'inflicts damage' in move.name:
+        pass
+
+    if 'inflicts double damage' in move.name:
+        pass
+
+    if 'faints' in move.name:
+        pass
+
+    if 'one-hit ko' in move.name:
+        pass
+
+    if 'if it misses' in move.name:
+        pass
+
+    if 'halves':
+        pass
+
+    if 'the heavier':
+        pass
+
+    if 'random':
+        pass
+
+    if 'stats cannot be changed':
+        pass
+
+    if 'user attacks for 2-3 turns' in move.name or 'user attacks for 3 turns' in move.name:
+        pass
+
+    if 'the opponent switches' in move.name:
+        pass
+
+    if 'doesnt do anything' in move.name or 'warps player to last pokécenter' in move.name:
+        pass
+
+    if 'decoy' in move.name:
+        pass
+
+    if 'always takes off half of the opponent\'s hp' in move.name:
+        pass
+
+    if 'user takes on the form and attacks of the opponent' in move.name:
+        pass
+
+
+
+
+def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon, damage_override=-1):
+    type_effectivenss_chart = pd.read_csv('type_effectiveness.csv', index_col=0)
+    a = attacker.sp_atk if move.category == 'special' else attacker.attack
+    d = defender.sp_def if move.category == 'special' else defender.defense
+    stab = 1.5 if move.type in attacker.types else 1
+    type1 = type_effectivenss_chart.loc[move.type, defender.types[0]]
+    type2 = 1 if len(defender.types) == 1 else type_effectivenss_chart.loc[move.type, defender.types[1]]
+    type_effect = type1 * type2
+    random_val = random.randint(217, 255) / 255
+
+    level_factor = (((2 * attacker.level * attacker.crit_ratio) / 5) + 2)
+    base = ((level_factor * move.power * (a / d)) / 50) + 2
+
+    if damage_override == -1:
+        damage = np.round(base * stab * type_effect * random_val, 2)
+    else:
+        damage = damage_override
+    print('DAMAGE: ', damage)
+
+    if type_effect >= 2.0:
+        print('It\'s super effective!')
+    elif type_effect == 0.5:
+        print('It\'s not very effective')
+    elif type_effect == 0:
+        print('It has no effect')
+
+    return damage

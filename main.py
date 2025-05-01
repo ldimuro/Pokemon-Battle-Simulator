@@ -6,12 +6,6 @@ import numpy as np
 import main_helper
 import time
 
-# 881140 Caterpie vs Metapod
-# 728127 instant Self-Destruct
-# 679815 interesting battle Hitmonlee vs Chansey
-# seed = random.randint(0, 1000000)
-# main_helper.set_seed(seed)
-
 version = 'red-blue'
 episodes = 1
 

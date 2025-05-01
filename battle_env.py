@@ -47,7 +47,7 @@ class BattleEnv:
                 self.execute_move(first_move, first_pokemon, second_pokemon)
 
 
-            # CHECK TO SEE IF POKEON LOSES ITS TURN
+            # CHECK TO SEE IF POKEMON LOSES ITS TURN
 
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = self.apply_status_effects(second_pokemon)
@@ -120,10 +120,10 @@ class BattleEnv:
         stab = 1.5 if move.type in attacker.types else 1
         type1 = type_effectivenss_chart.loc[move.type, defender.types[0]]
         type2 = 1 if len(defender.types) == 1 else type_effectivenss_chart.loc[move.type, defender.types[1]]
-        type_effect = type1*type2
+        type_effect = type1 * type2
         random_val = random.randint(217, 255) / 255
 
-        level_factor = (((2*attacker.level*attacker.crit_ratio)/5)+2)
+        level_factor = (((2 * attacker.level * attacker.crit_ratio) / 5) + 2)
         base = ((level_factor * move.power * (a / d)) / 50) + 2
 
         if damage_override == -1:

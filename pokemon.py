@@ -23,15 +23,10 @@ class Pokemon:
         base_stats = pokemon.base_stats
         self.base_hp = base_stats.hp
         self.base_attack = base_stats.attack
-        self.attack = self.base_attack
         self.base_defense = base_stats.defense
-        self.defense = self.base_defense
         self.base_sp_atk = base_stats.sp_atk
-        self.sp_atk = self.base_sp_atk
         self.base_sp_def = base_stats.sp_def
-        self.sp_def = self.base_sp_def
         self.base_speed = base_stats.speed
-        self.speed = self.base_speed
         self.overall_stats = self.base_hp + self.base_attack + self.base_defense + self.base_sp_atk + self.base_sp_def + self.base_speed
         
         self.is_fainted = False
@@ -46,6 +41,11 @@ class Pokemon:
         # BATTLE STATE
         self.curr_hp = self.base_hp
         self.status = Status.NONE
+        self.attack = self.base_attack
+        self.defense = self.base_defense
+        self.sp_atk = self.base_sp_atk
+        self.sp_def = self.base_sp_def
+        self.speed = self.base_speed
         self.atk_tier = 0
         self.def_tier = 0
         self.sp_atk_tier = 0
@@ -203,7 +203,7 @@ class Pokemon:
             'ground': '🟤',
             'flying': '🪽',
             'psychic': '👁️',
-            'bug': '🪲',
+            'bug': '🐞',
             'rock': '🪨',
             'ghost': '👻',
             'dragon': '🐲',
