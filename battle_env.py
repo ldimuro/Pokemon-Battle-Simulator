@@ -46,6 +46,9 @@ class BattleEnv:
             if not has_lost_turn:
                 self.execute_move(first_move, first_pokemon, second_pokemon)
 
+            
+            print(f'-----------------------------------------------------------------------')
+
 
             # CHECK TO SEE IF POKEMON LOSES ITS TURN
             # APPLY STATUS (IF APPLICABLE)

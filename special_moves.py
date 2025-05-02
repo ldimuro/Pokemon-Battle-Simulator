@@ -4,6 +4,7 @@ import random
 import numpy as np
 import pandas as pd
 from pokemon_enums import Status
+from moves import moves_db
 
 # - none
 
@@ -164,7 +165,6 @@ from pokemon_enums import Status
     - 'equal to the user's remaining HP'
     - 'equal to user's level'
     - 'based on the target's defense, not special defense'
-    - 'equal to user's level'
     - 'on contact'
 
 - 'inflict double damage'
@@ -222,6 +222,13 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         defender.reduce_hp(damage)
         return
     
+    if 'random' in move.effect:
+        if 'any move in the game' in move.effect:
+            _, move = random.choice(list(moves_db.items()))
+            print(f'{attacker.name.upper()} uses {move.name.upper()}')
+        elif 'power' in move.effect:
+            pass
+
 
     damage = calculate_damage(move, attacker, defender)
     
@@ -380,10 +387,12 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
     if 'inflicts damage' in move.effect:
         if f'50-150% of user\'s level':
-            pass
+            damage = calculate_damage(move, attacker, defender, damage_override=np.round(attacker.level*random.uniform(0.5, 1.5), 1))
+            defender.reduce_hp(damage)
 
         if 'equal to the user\'s remaining HP':
-            pass
+            damage = calculate_damage(move, attacker, defender, damage_override=attacker.curr_hp)
+            defender.reduce_hp(damage)
 
         if 'equal to user\'s level':
             damage = calculate_damage(move, attacker, defender, damage_override=attacker.level)
@@ -412,9 +421,6 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         pass
 
     if 'the heavier' in move.effect:
-        pass
-
-    if 'random' in move.effect:
         pass
 
     if 'stats cannot be changed' in move.effect:
@@ -475,12 +481,14 @@ def calculate_damage(move: Move, attacker: Pokemon, defender: Pokemon, damage_ov
         
     print('DAMAGE: ', damage)
 
-    if type_effect >= 2.0:
-        print('It\'s super effective!')
-    elif type_effect == 0.5:
-        print('It\'s not very effective')
-    elif type_effect == 0:
-        print('It has no effect')
+
+    if move.category != 'status':
+        if type_effect >= 2.0:
+            print('It\'s super effective!')
+        elif type_effect == 0.5:
+            print('It\'s not very effective')
+        elif type_effect == 0:
+            print('It has no effect')
 
     return damage
 
