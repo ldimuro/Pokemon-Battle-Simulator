@@ -225,13 +225,13 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'random' in move.effect:
         if 'any move in the game' in move.effect:
             _, move = random.choice(list(moves_db.items()))
-            print(f'{attacker.name.upper()} uses {move.name.upper()}')
+            print(f'{attacker.name.upper()} randomly uses {move.name.upper()}')
         elif 'power' in move.effect:
             pass
 
 
     damage = calculate_damage(move, attacker, defender)
-    
+
 
     if 'may' in move.effect:
         if 'lower':
@@ -305,7 +305,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'paralyzes' in move.effect:
         defender.add_status(Status.PARALYZED)
 
-    if 'opponents to sleep' in move.effect:
+    if 'opponent to sleep' in move.effect:
         defender.add_status(Status.ASLEEP, status_count=random.randint(1,7))
 
     if 'poisons' in move.effect:
@@ -328,6 +328,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
                 if defender.status == Status.ASLEEP:
                     attacker.recover_hp(np.round(damage/2, 2))
                 else:
+                    damage = 0
                     print('the move had no effect')
             else:
                 attacker.recover_hp(np.round(damage/2, 2))
@@ -386,22 +387,25 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         pass
 
     if 'inflicts damage' in move.effect:
-        if f'50-150% of user\'s level':
+        if f'50-150% of user\'s level' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=np.round(attacker.level*random.uniform(0.5, 1.5), 1))
             defender.reduce_hp(damage)
+            return
 
-        if 'equal to the user\'s remaining HP':
+        if 'equal to the user\'s remaining HP' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=attacker.curr_hp)
             defender.reduce_hp(damage)
+            return
 
-        if 'equal to user\'s level':
+        if 'equal to user\'s level' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=attacker.level)
             defender.reduce_hp(damage)
+            return
 
-        if 'based on the target\'s defense, not special defense':
+        if 'based on the target\'s defense, not special defense' in move.effect:
             pass
 
-        if 'on contact':
+        if 'on contact' in move.effect:
             pass
 
     if 'inflicts double damage' in move.effect:
@@ -445,7 +449,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'user takes on the form and attacks of the opponent' in move.effect:
         attacker.moves = defender.moves
         attacker.types = defender.types
-        print(f'{attacker.name.upper()} became type(s) {defender.moves} with moves {defender.moves}')
+        print(f'{attacker.name.upper()} became type(s) {defender.types} with moves {[move.name for move in defender.moves]}')
 
 
     defender.reduce_hp(damage)
@@ -479,10 +483,9 @@ def calculate_damage(move: Move, attacker: Pokemon, defender: Pokemon, damage_ov
         damage = damage_override
     
         
-    print('DAMAGE: ', damage)
-
-
     if move.category != 'status':
+        print('DAMAGE: ', damage)
+
         if type_effect >= 2.0:
             print('It\'s super effective!')
         elif type_effect == 0.5:

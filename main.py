@@ -20,6 +20,7 @@ for i in range(episodes):
     # 557439 weird out-of-order effect with poisoning and fainting
     # 398256 vileplume never snaps out of confusion
     # 313455 use of Metronome
+    # 272224 uses of Metronome that randomly selects Metronome again
     seed = random.randint(0, 1000000)
     main_helper.set_seed(seed)
 
