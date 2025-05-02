@@ -36,7 +36,6 @@ class BattleEnv:
             self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
-
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = self.apply_status_effects(first_pokemon)
 
@@ -49,7 +48,6 @@ class BattleEnv:
 
 
             # CHECK TO SEE IF POKEMON LOSES ITS TURN
-
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = self.apply_status_effects(second_pokemon)
 
@@ -78,150 +76,10 @@ class BattleEnv:
         hit_chance = self.get_hit_chance(move, attacker, defender)*100
         if hit_chance == 1 or random.randint(0, 100) <= hit_chance:
             special_moves.handle_move_effects(move, attacker, defender)
-
-            # match move.category:
-            #     case ('physical' | 'special'):
-
-            #         if move.power == -1:
-            #             print('\tHANDLE ATTACKS WITH NO POWER')
-                        
-            #             if move.name == 'seismic-toss':
-            #                 damage = self.calculate_damage(move, attacker, defender, damage_override=attacker.level)
-            #                 defender.reduce_hp(damage)
-            #             else:
-            #                 damage = self.calculate_damage(move, attacker, defender, damage_override=0)
-            #                 defender.reduce_hp(damage)
-            #         else:
-            #             damage = self.calculate_damage(move, attacker, defender)
-            #             defender.reduce_hp(damage)
-
-            #         if not defender.is_fainted:
-            #             if 'may' in move.effect:
-            #                 print('\tHANDLE MAY CASES')
-                        
-            #         if 'recover' in move.effect:
-            #             if 'inflicted' in move.effect:
-                            
-            #                 # ADD CASE FOR DREAM EATER
-            #                 #if move.name == 'dream-eater' and defender.status_condition == Status.ASLEEP
-            #                 attacker.recover_hp(np.round(damage/2, 2))
-            #             elif 'max hp' in move.effect:
-            #                 attacker.recover_hp(np.round(attacker.base_hp/2, 2))
-
-
-            #     case 'status':
-            #         self.calculate_status(move, attacker, defender)
-            #     case _:
-            #         pass
         else:
             print(f'{attacker.name.upper()}\'s move missed')
 
-    def calculate_damage(self, move: Move, attacker: Pokemon, defender: Pokemon, damage_override=-1):
-        type_effectivenss_chart = pd.read_csv('type_effectiveness.csv', index_col=0)
-        a = attacker.sp_atk if move.category == 'special' else attacker.attack
-        d = defender.sp_def if move.category == 'special' else defender.defense
-        stab = 1.5 if move.type in attacker.types else 1
-        type1 = type_effectivenss_chart.loc[move.type, defender.types[0]]
-        type2 = 1 if len(defender.types) == 1 else type_effectivenss_chart.loc[move.type, defender.types[1]]
-        type_effect = type1 * type2
-        random_val = random.randint(217, 255) / 255
 
-        level_factor = (((2 * attacker.level * attacker.crit_ratio) / 5) + 2)
-        base = ((level_factor * move.power * (a / d)) / 50) + 2
-
-        if damage_override == -1:
-            damage = np.round(base * stab * type_effect * random_val, 2)
-        else:
-            damage = damage_override
-        print('DAMAGE: ', damage)
-
-        if type_effect >= 2.0:
-            print('It\'s super effective!')
-        elif type_effect == 0.5:
-            print('It\'s not very effective')
-        elif type_effect == 0:
-            print('It has no effect')
-
-        return damage
-    
-    # def calculate_status(self, move: Move, attacker: Pokemon, defender: Pokemon):
-    #     effect_segments = move.effect.split('and') # doesnt work
-
-    #     for effect in effect_segments:
-    #         if 'sharply raises' in effect:
-    #             if 'attack' in effect:
-    #                 attacker.modifiy_stats_stage('attack', 2)
-    #             elif 'defense' in effect and 'special defense' not in effect:
-    #                 attacker.modifiy_stats_stage('defense', 2)
-    #             elif 'special attack' in effect:
-    #                 attacker.modifiy_stats_stage('sp_atk', 2)
-    #             elif 'special defense' in effect:
-    #                 attacker.modifiy_stats_stage('sp_def', 2)
-    #             elif 'speed' in effect:
-    #                 attacker.modifiy_stats_stage('speed', 2)
-    #             elif 'evasiveness' in effect:
-    #                 attacker.modifiy_stats_stage('evasiveness', 2)
-    #             elif 'accuracy' in effect:
-    #                 attacker.modifiy_stats_stage('accuracy', 2)
-    #         elif 'sharply lowers' in effect:
-    #             if 'attack' in effect:
-    #                 defender.modifiy_stats_stage('attack', -2)
-    #             elif 'defense' in effect and 'special defense' not in effect:
-    #                 defender.modifiy_stats_stage('defense', -2)
-    #             elif 'special attack' in effect:
-    #                 defender.modifiy_stats_stage('sp_atk', -2)
-    #             elif 'special defense' in effect:
-    #                 defender.modifiy_stats_stage('sp_def', -2)
-    #             elif 'speed' in effect:
-    #                 defender.modifiy_stats_stage('speed', -2)
-    #             elif 'evasiveness' in effect:
-    #                 defender.modifiy_stats_stage('evasiveness', -2)
-    #             elif 'accuracy' in effect:
-    #                 defender.modifiy_stats_stage('accuracy', -2)
-    #         elif 'raises' in effect:
-    #             if 'attack' in effect and 'special attack' not in effect:
-    #                 attacker.modifiy_stats_stage('attack', 1)
-    #             elif 'defense' in effect and 'special defense' not in effect:
-    #                 attacker.modifiy_stats_stage('defense', 1)
-    #             elif 'special attack' in effect:
-    #                 attacker.modifiy_stats_stage('sp_atk', 1)
-    #             elif 'special defense' in effect:
-    #                 attacker.modifiy_stats_stage('sp_def', 1)
-    #             elif 'speed' in effect:
-    #                 attacker.modifiy_stats_stage('speed', 1)
-    #             elif 'evasiveness' in effect:
-    #                 attacker.modifiy_stats_stage('evasiveness', 1)
-    #             elif 'accuracy' in effect:
-    #                 attacker.modifiy_stats_stage('accuracy', 1)
-    #         elif 'lowers' in effect:
-    #             if 'attack' in effect:
-    #                 defender.modifiy_stats_stage('attack', -1)
-    #             elif 'defense' in effect and 'special defense' not in effect:
-    #                 defender.modifiy_stats_stage('defense', -1)
-    #             elif 'special attack' in effect:
-    #                 defender.modifiy_stats_stage('sp_atk', -1)
-    #             elif 'special defense' in effect:
-    #                 defender.modifiy_stats_stage('sp_def', -1)
-    #             elif 'speed' in effect:
-    #                 defender.modifiy_stats_stage('speed', -1)
-    #             elif 'evasiveness' in effect:
-    #                 defender.modifiy_stats_stage('evasiveness', -1)
-    #             elif 'accuracy' in effect:
-    #                 defender.modifiy_stats_stage('accuracy', -1)
-    #         elif 'confuses' in effect: 
-    #             defender.add_confused(random.randint(2, 5))
-    #         elif 'paralyzes' in effect:
-    #             defender.add_status(Status.PARALYZED)
-    #         elif 'opponent to sleep' in effect:
-    #             defender.add_status(Status.ASLEEP, status_count=random.randint(1,7))
-    #         elif 'poisons' in effect:
-    #             defender.add_status(Status.POISONED)
-    #         elif 'recover' in move.effect: # RECOVER, SOFT-BOILED
-    #             if 'max hp' in move.effect:
-    #                 attacker.recover_hp(np.round(attacker.base_hp/2, 2))
-    #         elif 'user sleeps' in move.effect: # REST
-    #             attacker.add_status(Status.ASLEEP, 2)
-    #             attacker.recover_hp(attacker.base_hp - attacker.curr_hp)
 
     def apply_status_effects(self, pokemon: Pokemon):
         lose_turn = False
@@ -244,7 +102,7 @@ class BattleEnv:
                         pp=25,
                         effect='confusion damage'
                     )
-                    confusion_damage = self.calculate_damage(confusion_damage_move, pokemon, pokemon)
+                    confusion_damage = special_moves.calculate_damage(confusion_damage_move, pokemon, pokemon)
                     pokemon.reduce_hp(confusion_damage)
                     lose_turn = True
 

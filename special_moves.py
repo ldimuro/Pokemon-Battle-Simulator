@@ -5,76 +5,89 @@ import numpy as np
 import pandas as pd
 from pokemon_enums import Status
 
+# - none
+
+# - 'may'
+#     - 'lower'
+#         - 'special defense'
+#         - 'defense'
+#         - 'special attack'
+#         - 'attack'
+#         - 'accuracy'
+#         - 'evasiveness'
+#     - 'raise'
+#     - 'flinching'
+#     - 'freeze'
+#     - 'paralyze'
+#     - 'confuse'
+#     - 'burn'
+#     - 'poison'
+#     - 'to sleep'
+
+# - 'raises' and not 'sharply raises'
+#     - 'special defense'
+#     - 'defense'
+#     - 'special attack'
+#     - 'attack'
+#     - 'accuracy'
+#     - 'evasiveness'
+
+# - 'lowers' and not 'sharply lowers'
+#     - 'special defense'
+#     - 'defense'
+#     - 'special attack'
+#     - 'attack'
+#     - 'accuracy'
+#     - 'evasiveness'
+
+# 'sharply lowers':
+#     - 'special defense'
+#     - 'defense'
+#     - 'special attack'
+#     - 'attack'
+#     - 'accuracy'
+#     - 'evasiveness'
+
+# 'sharply raises'
+#     - 'special defense'
+#     - 'defense'
+#     - 'special attack'
+#     - 'attack'
+#     - 'accuracy'
+#     - 'evasiveness'
+
+# - 'confuses'
+
+# - 'paralyzes'
+
+# - 'opponents to sleep'
+
+# - 'poisons'
+
+# - 'badly poisons'
+
+# - 'user sleeps'
+    
+# 'recovers'
+#     - 'half the hp inflicted'
+#         - 'sleeping'
+#     - 'max hp'
+#         - 'half its max hp'
+
+# - 'recoil'
+
+# - 'one-hit ko'
+
+# - 'always takes off half of the opponent's hp'
+
+# - 'user takes on the form and attacks of the opponent'
+
+# - 'doesnt do anything' or 'warps player to last pokécenter'
+
 '''
 
-- none
-
 - 'may'
-    - 'lower'
-        - 'special defense'
-        - 'defense'
-        - 'special attack'
-        - 'attack'
-        - 'accuracy'
-        - 'evasiveness'
-    - 'raise'
     - 'flinching'
-    - 'freeze'
-    - 'paralyze'
-    - 'confuse'
-    - 'burn'
-    - 'poison'
-    - 'to sleep'
-
-- 'raises' and not 'sharply raises'
-    - 'special defense'
-    - 'defense'
-    - 'special attack'
-    - 'attack'
-    - 'accuracy'
-    - 'evasiveness'
-
-- 'lowers' and not 'sharply lowers'
-    - 'special defense'
-    - 'defense'
-    - 'special attack'
-    - 'attack'
-    - 'accuracy'
-    - 'evasiveness'
-
-'sharply lowers':
-    - 'special defense'
-    - 'defense'
-    - 'special attack'
-    - 'attack'
-    - 'accuracy'
-    - 'evasiveness'
-
-'sharply raises'
-    - 'special defense'
-    - 'defense'
-    - 'special attack'
-    - 'attack'
-    - 'accuracy'
-    - 'evasiveness'
-
-- 'confuses'
-
-- 'paralyzes'
-
-- 'opponents to sleep'
-
-- 'poisons'
-
-- 'badly poisons'
-
-- 'user sleeps'
-    
-'recovers'
-    - 'half the hp inflicted'
-        - 'sleeping'
-    - 'max hp'
-        - 'half its max hp'
 
 - 'drains hp'
 
@@ -124,8 +137,6 @@ from pokemon_enums import Status
     - 'all stat changes'
     - 'opponent's evasiveness' and 'allows normal' and 'fighting' and 'to hit ghosts'
 
-- 'recoil'
-
 - 'user takes damage for two turns then strikes back double'
 
 - 'power is doubled if' or 'power doubles if' or 'doubles in power' or 'double power'
@@ -169,7 +180,7 @@ from pokemon_enums import Status
         - 'sharply lowers opponent's attack and special attack'
     - 'in 3 turns'
 
-- 'one-hit ko'
+
 
 - 'if it misses'
 
@@ -196,13 +207,10 @@ from pokemon_enums import Status
 
 - 'the opponent switches'
 
-- 'doesnt do anything' or 'warps player to last pokécenter'
 
 - 'decoy'
 
-- 'always takes off half of the opponent's hp'
 
-- 'user takes on the form and attacks of the opponent'
 
 '''
 
@@ -303,7 +311,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'user sleeps' in move.effect:
         if attacker.status is not Status.NONE:
             attacker.remove_status()
-            
+
         attacker.add_status(Status.ASLEEP, 2)
         attacker.recover_hp(attacker.base_hp - attacker.curr_hp)
 
@@ -418,7 +426,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'the opponent switches' in move.effect:
         pass
 
-    if 'doesnt do anything' in move.effect or 'warps player to last pokécenter' in move.effect:
+    if 'doesn\'t do anything' in move.effect or 'warps player to last pokécenter' in move.effect:
         damage = 0
         print('nothing happened')
 
