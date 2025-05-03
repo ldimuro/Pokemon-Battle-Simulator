@@ -97,6 +97,11 @@ from moves import moves_db
 #     - '40 HP'
 #     - '20 HP'
 
+# - 'inflict double damage'
+#     - 'poisoned'
+#     - 'if the target has a status condition'
+#     - 'if a teammate fainted on the last turn'
+
 '''
 
 - 'may'
@@ -172,10 +177,6 @@ from moves import moves_db
     - 'based on the target's defense, not special defense'
     - 'on contact'
 
-- 'inflict double damage'
-    - 'poisoned'
-    - 'if the target has a status condition'
-    - 'if a teammate fainted on the last turn'
 
 - 'faints'
     - 'user faints'
@@ -238,11 +239,9 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             print(f'Magnitude {random_val}!')
 
             # Add extra damage is opponent has used Dig
-            print('TODO: handle Dig case')
+            print('TODO: handle Magnitude case')
 
-            damage = calculate_damage(move, attacker, defender, damage_override=magnitude_powers[random_val][1])
-            defender.reduce_hp(damage)
-            return
+            # damage = calculate_damage(move, attacker, defender, damage_override=magnitude_powers[random_val][1])
 
 
     damage = calculate_damage(move, attacker, defender)
@@ -260,7 +259,6 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         if 'paralyze, burn, or freeze' in move.effect:
             if random.random() <= 0.2:
                 defender.add_status(random.choice([Status.PARALYZED, Status.BURNED, Status.FROZEN]))
-                return
 
         if 'flinching' in move.effect:
             print('TODO: may cause flinching')
@@ -388,10 +386,8 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             for mon in pokemon:
                 for stat in stats:
                     mon.reset_stat(stat)
-            return
         elif 'opponent\'s evasiveness' in move.effect and 'allows normal' in move.effect and 'fighting' in move.effect and 'to hit ghosts' in move.effect:
             print('TODO: handle case')
-            return
 
     if 'recoil' in move.effect:
         recoil_damage = np.floor(damage / 4)
@@ -410,28 +406,18 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'always inflicts' in move.effect:
         if '40 hp' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=40)
-            defender.reduce_hp(damage)
-            return
         elif '20 hp' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=20)
-            defender.reduce_hp(damage)
-            return
 
     if 'inflicts damage' in move.effect:
         if f'50-150% of user\'s level' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=np.round(attacker.level*random.uniform(0.5, 1.5), 1))
-            defender.reduce_hp(damage)
-            return
 
         if 'equal to the user\'s remaining HP' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=attacker.curr_hp)
-            defender.reduce_hp(damage)
-            return
 
         if 'equal to user\'s level' in move.effect:
             damage = calculate_damage(move, attacker, defender, damage_override=attacker.level)
-            defender.reduce_hp(damage)
-            return
 
         if 'based on the target\'s defense, not special defense' in move.effect:
             pass
@@ -440,7 +426,14 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             pass
 
     if 'inflicts double damage' in move.effect:
-        pass
+        if 'poisoned' in move.effect and defender.status == Status.POISONED:
+            damage *= 2
+        
+        if 'if the target has a status condition' in move.effect and defender.status != Status.NONE:
+            damage *= 2
+
+        if 'if a teammate fained on the last turn' in move.effect:
+            print('TODO: if a teammate fained on the last turn')
 
     if 'faints' in move.effect:
         pass
@@ -484,6 +477,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
 
     defender.reduce_hp(damage)
+    print('DAMAGE: ', damage)
 
     
 
@@ -515,8 +509,6 @@ def calculate_damage(move: Move, attacker: Pokemon, defender: Pokemon, damage_ov
     
         
     if move.category != 'status':
-        print('DAMAGE: ', damage)
-
         if type_effect >= 2.0:
             print('It\'s super effective!')
         elif type_effect == 0.5:

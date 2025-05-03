@@ -7,7 +7,7 @@ import main_helper
 import time
 
 version = 'red-blue'
-episodes = 1
+episodes = 100
 
 start = time.time()
 
@@ -21,6 +21,7 @@ for i in range(episodes):
     # 398256 vileplume never snaps out of confusion
     # 313455 use of Metronome
     # 272224 uses of Metronome that randomly selects Metronome again
+    # 843007 both pokemon faint on the last turn
     seed = random.randint(0, 1000000)
     main_helper.set_seed(seed)
 
