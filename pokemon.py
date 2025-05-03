@@ -38,6 +38,8 @@ class Pokemon:
         self.status_count = 0
         self.curr_status_count = 1
 
+        self.temp_effects = {}
+
         # BATTLE STATE
         self.curr_hp = self.base_hp
         self.status = Status.NONE
@@ -202,7 +204,7 @@ class Pokemon:
                 self.evasiveness_tier = 0
             case 'accuracy':
                 self.accuracy_tier = 0
-                
+
 
     def stats_multiplier(self, stage):
         stage_multipliers = { 

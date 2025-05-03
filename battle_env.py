@@ -33,6 +33,8 @@ class BattleEnv:
                 second_pokemon, second_move = self.player_pokemon, player_move
 
             print(f'=============================|TURN {turn}|=============================')
+            print('1st pokemon temp_effects:', first_pokemon.temp_effects)
+            print('2nd pokemon temp_effects:', second_pokemon.temp_effects)
             self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
