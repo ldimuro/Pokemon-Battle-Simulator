@@ -85,6 +85,18 @@ from moves import moves_db
 
 # - 'doesnt do anything' or 'warps player to last pokécenter'
 
+# - 'random'
+#     - 'any move in the game'
+#     - 'power'
+
+# - 'resets'
+#     - 'all stat changes'
+#     - 'opponent's evasiveness' and 'allows normal' and 'fighting' and 'to hit ghosts'
+
+# - 'always inflicts'
+#     - '40 HP'
+#     - '20 HP'
+
 '''
 
 - 'may'
@@ -134,9 +146,6 @@ from moves import moves_db
         - 'PP'
         - 'performs'
 
-- 'resets'
-    - 'all stat changes'
-    - 'opponent's evasiveness' and 'allows normal' and 'fighting' and 'to hit ghosts'
 
 - 'user takes damage for two turns then strikes back double'
 
@@ -155,10 +164,6 @@ from moves import moves_db
 - 'user's type'
     - 'it's first move'
     - 'to the location'
-
-- 'always inflicts'
-    - '40 HP'
-    - '20 HP'
 
 - 'inflicts damage'
     - '50-150% of user's level'
@@ -195,9 +200,6 @@ from moves import moves_db
     - 'opponent'
     - 'user'
 
-- 'random'
-    - 'any move in the game'
-    - 'power'
 
 - 'stats cannot be changed'
 
@@ -223,11 +225,24 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         return
     
     if 'random' in move.effect:
-        if 'any move in the game' in move.effect:
+        if 'any move in the game' in move.effect: # Only applies to metronome
             _, move = random.choice(list(moves_db.items()))
             print(f'{attacker.name.upper()} randomly uses {move.name.upper()}')
-        elif 'power' in move.effect:
-            pass
+        elif 'power' in move.effect: # Only applies to magnitude
+            magnitude_powers = {4: (0.05, 10), 5: (0.1, 30), 6: (0.2, 50), 7: (0.3, 70), 
+                                8: (0.2, 90), 9: (0.1, 110), 10: (0.05, 150)}
+            keys = list(magnitude_powers.keys())
+            weights = [magnitude_powers[k][0] for k in keys]
+
+            random_val = random.choices(keys, weights=weights, k=1)[0]
+            print(f'Magnitude {random_val}!')
+
+            # Add extra damage is opponent has used Dig
+            print('TODO: handle Dig case')
+
+            damage = calculate_damage(move, attacker, defender, damage_override=magnitude_powers[random_val][1])
+            defender.reduce_hp(damage)
+            return
 
 
     damage = calculate_damage(move, attacker, defender)
@@ -287,7 +302,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
                     defender.add_status(Status.POISONED)
 
 
-    if 'raises' in move.effect and not 'sharply raises' in move.effect:
+    if 'raises' in move.effect and not 'sharply raises' in move.effect and 'when hit' not in move.effect:
         handle_stat_change(move, attacker, 1)
 
     if 'lowers' in move.effect and not 'sharply lowers' in move.effect:
@@ -367,7 +382,16 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         pass
 
     if 'resets' in move.effect:
-        pass
+        if 'all stat changes' in move.effect:
+            stats = ['attack', 'defense', 'sp_atk', 'sp_def', 'speed', 'evasiveness', 'accuracy']
+            pokemon = [attacker, defender]
+            for mon in pokemon:
+                for stat in stats:
+                    mon.reset_stat(stat)
+            return
+        elif 'opponent\'s evasiveness' in move.effect and 'allows normal' in move.effect and 'fighting' in move.effect and 'to hit ghosts' in move.effect:
+            print('TODO: handle case')
+            return
 
     if 'recoil' in move.effect:
         recoil_damage = np.floor(damage / 4)
@@ -384,7 +408,14 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         pass
 
     if 'always inflicts' in move.effect:
-        pass
+        if '40 hp' in move.effect:
+            damage = calculate_damage(move, attacker, defender, damage_override=40)
+            defender.reduce_hp(damage)
+            return
+        elif '20 hp' in move.effect:
+            damage = calculate_damage(move, attacker, defender, damage_override=20)
+            defender.reduce_hp(damage)
+            return
 
     if 'inflicts damage' in move.effect:
         if f'50-150% of user\'s level' in move.effect:

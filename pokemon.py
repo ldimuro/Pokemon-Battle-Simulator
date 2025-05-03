@@ -181,6 +181,29 @@ class Pokemon:
 
         # print(f'{self.name.upper()}\'s {stat} {'increased' if change > 0 else 'decreased'}')
 
+    def reset_stat(self, stat):
+        match stat:
+            case 'attack':
+                self.atk_tier = 0
+                self.attack = self.base_attack
+            case 'defense':
+                self.def_tier = 0
+                self.defense = self.base_defense
+            case 'sp_atk':
+                self.sp_atk_tier = 0
+                self.sp_atk = self.base_sp_atk
+            case 'sp_def':
+                self.sp_def_tier = 0
+                self.sp_def = self.base_sp_def
+            case 'speed':
+                self.speed_tier = 0
+                self.speed = self.base_speed
+            case 'evasiveness':
+                self.evasiveness_tier = 0
+            case 'accuracy':
+                self.accuracy_tier = 0
+                
+
     def stats_multiplier(self, stage):
         stage_multipliers = { 
             6: 4.0, 5: 3.5, 4: 3.0, 3: 2.5, 2: 2.0, 1: 1.5, 0: 1.0, 
