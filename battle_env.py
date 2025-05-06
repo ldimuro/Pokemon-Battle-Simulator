@@ -6,18 +6,25 @@ import pandas as pd
 import numpy as np
 from pokemon_enums import Status
 import special_moves
+from trainer import Trainer
 
 class BattleEnv:
-    def __init__(self, curr_pokemon: Pokemon, opp_pokemon: Pokemon):
-        self.player_pokemon = curr_pokemon
-        self.opp_pokemon = opp_pokemon
+    def __init__(self, trainer1, trainer2):
+        self.trainer1: Trainer = trainer1
+        self.trainer2: Trainer = trainer2
+
+        self.player_pokemon: Pokemon = self.trainer1.party[0]
+        self.opp_pokemon: Pokemon = self.trainer2.party[0]
 
         # print(f'{self.player_pokemon.name.upper()} ({self.player_pokemon.curr_hp} HP) vs. {self.opp_pokemon.name.upper()} ({self.opp_pokemon.curr_hp} HP)')
 
-    def start_battle(self):
+    def simulate_battle(self):
+
+        player_wins = 0
+        opp_wins = 0
         
         turn = 1
-        while self.player_pokemon.curr_hp > 0 and self.opp_pokemon.curr_hp > 0:
+        while len(self.trainer1.party) > 0 and len(self.trainer2.party) > 0:#self.player_pokemon.curr_hp > 0 and self.opp_pokemon.curr_hp > 0:
             if turn == 100:
                 print('STALEMATE')
                 break
@@ -25,7 +32,7 @@ class BattleEnv:
             player_move: Move = self.player_pokemon.use_move()
             opp_move: Move = self.opp_pokemon.use_move()
 
-            # SET UP PRIORITY
+            # TODO: SET UP PRIORITY
 
             if self.player_pokemon.speed >= self.opp_pokemon.speed:
                 first_pokemon, first_move = self.player_pokemon, player_move
@@ -44,14 +51,32 @@ class BattleEnv:
             has_lost_turn = self.apply_status_effects(first_pokemon)
 
             if first_pokemon.is_fainted:
+                if first_pokemon.owner == self.trainer1.name:
+                    # Remove fainted pokemon from trainer and throw in next in line
+                    self.trainer1.party.remove(first_pokemon)
+                    self.player_pokemon = self.trainer1.party[0] if len(self.trainer1.party) > 0 else None
+                    print(f'{self.trainer1.name} threw in:', end='')
+                    self.player_pokemon.print_data() if self.player_pokemon is not None else ''
+                    continue
+                else:
+                    # Remove fainted pokemon from trainer and throw in next in line
+                    self.trainer2.party.remove(first_pokemon)
+                    self.opp_pokemon = self.trainer2.party[0] if len(self.trainer2.party) > 0 else None
+                    print(f'{self.trainer2.name} threw in:', end='')
+                    self.opp_pokemon.print_data() if self.opp_pokemon is not None else ''
+                    continue
+
+            # One trainer has no pokemon left to play
+            if self.player_pokemon is None or self.opp_pokemon is None:
                 break
+
 
             # First Move
             if not has_lost_turn:
                 self.execute_move(first_move, first_pokemon, second_pokemon)
 
             
-            print(f'-----------------------------------------------------------------------')
+            print(f'------------------------------------------------------------------')
 
 
             # CHECK TO SEE IF POKEMON LOSES ITS TURN
@@ -59,10 +84,30 @@ class BattleEnv:
             has_lost_turn = self.apply_status_effects(second_pokemon)
 
             if second_pokemon.is_fainted:
+                # Remove fainted pokemon from trainer and throw in next in line
+                if second_pokemon.owner == self.trainer1.name:
+                    self.trainer1.party.remove(second_pokemon)
+                    self.player_pokemon = self.trainer1.party[0] if len(self.trainer1.party) > 0 else None
+                    print(f'{self.trainer1.name} threw in:', end='')
+                    self.player_pokemon.print_data() if self.player_pokemon is not None else ''
+                    continue
+                else:
+                    # Remove fainted pokemon from trainer and throw in next in line
+                    self.trainer2.party.remove(second_pokemon)
+                    self.opp_pokemon = self.trainer2.party[0] if len(self.trainer2.party) > 0 else None
+                    print(f'{self.trainer2.name} threw in:', end='')
+                    self.opp_pokemon.print_data() if self.opp_pokemon is not None else ''
+                    continue
+
+
+            # One trainer has no pokemon left to play
+            if self.player_pokemon is None or self.opp_pokemon is None:
                 break
+
 
             self.print_game_state()
 
+            
             # Second Move
             if not has_lost_turn:
                 self.execute_move(second_move, second_pokemon, first_pokemon)
@@ -70,14 +115,24 @@ class BattleEnv:
             turn += 1
 
 
+            print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
+            print(f'{self.trainer1.name}: {len(self.trainer1.party)}, {self.trainer2.name} pokemon: {len(self.trainer2.party)} ')
 
-        print(f'{first_pokemon.name.upper()} temp_effects:', first_pokemon.temp_effects)
-        print(f'{second_pokemon.name.upper()} temp_effects:', second_pokemon.temp_effects)
+
             
-        self.print_game_state()
 
-        winner = self.player_pokemon if self.player_pokemon.curr_hp > 0 else self.opp_pokemon
-        print(f'{winner.name.upper()} HAS WON THE BATTLE!')
+        # winner = self.player_pokemon if self.player_pokemon.curr_hp > 0 else self.opp_pokemon
+        if len(self.trainer1.party) > 0:
+            winner = self.trainer1.name
+            result = 1
+        else:
+            winner = self.trainer2.name
+            result = 0
+
+        # winner = self.trainer1 if len(self.trainer1.party) > 0 else self.trainer2
+        print(f'\n{winner} HAS WON THE BATTLE {len(self.trainer1.party) if len(self.trainer1.party) > 0 else len(self.trainer2.party)}-0!')
+
+        return result
 
 
 

@@ -8,11 +8,12 @@ from pokemon_enums import Status
 import numpy as np
 
 class Pokemon:
-    def __init__(self, pokemon_id, version):
+    def __init__(self, pokemon_id, owner, version):
         pokemon = pokedex.get(dex=pokemon_id)
 
         self.id = pokemon.dex
         self.name = pokemon.name
+        self.owner = owner
         self.level = random.randint(25, 50)#50
         self.height = pokemon.height
         self.weight = pokemon.weight

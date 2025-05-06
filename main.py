@@ -7,40 +7,32 @@ import numpy as np
 import main_helper
 import time
 
-version = 'red-blue'
-episodes = 1
+seed = random.randint(0, 1000000)
+main_helper.set_seed(seed)
+
 
 start = time.time()
 
+
+version = 'red-blue'
+party_size = 3
+episodes = 1
+
+outcomes = []
 for i in range(episodes):
-    # 881140 Caterpie vs Metapod
-    # 728127 instant Self-Destruct
-    # 679815 interesting battle Hitmonlee vs Chansey
-    # 349356 epic comeback Wigglytuff vs Vileplume
-    # 98368  weird out-of-order effect with confusion and fainting
-    # 557439 weird out-of-order effect with poisoning and fainting
-    # 398256 vileplume never snaps out of confusion
-    # 313455 use of Metronome
-    # 272224 uses of Metronome that randomly selects Metronome again
-    # 843007 both pokemon faint on the last turn
-    seed = random.randint(0, 1000000)
-    main_helper.set_seed(seed)
 
-    user = Trainer('ASH', version)
-    opp = Trainer('GARY', version)
+    user = Trainer('ASH', version, party_size=party_size)
+    opp = Trainer('GARY', version, party_size=party_size)
 
-    # Each side throws out the first pokemon in their party (randomly chosen)
-    user_pokemon = Pokemon(user.party[0].id, version)
-    user_pokemon.print_data()
+    env = BattleEnv(user, opp)
 
-    opp_pokemon = Pokemon(opp.party[0].id, version)
-    opp_pokemon.print_data()
+    # 1 for user win, 0 for opp win
+    outcome = env.simulate_battle()
+    outcomes.append(outcome)
 
-    env = BattleEnv(user_pokemon, opp_pokemon)
-
-    env.start_battle()
+print(f'USER WIN-RATE: {np.mean(outcomes)*100}% ({np.sum(outcomes)}/{len(outcomes)})')    
 
 end = time.time()
 elapsed = end - start
-print(f'executed {episodes} episodes in {elapsed:.2f} seconds')
+print(f'simulated {episodes} battles in {elapsed:.2f} seconds')
 
