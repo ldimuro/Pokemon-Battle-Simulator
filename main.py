@@ -7,6 +7,7 @@ import numpy as np
 import main_helper
 import time
 
+# 957405: Kadabra sweeps Gary's entire team in 1 turn?
 seed = random.randint(0, 1000000)
 main_helper.set_seed(seed)
 
@@ -30,9 +31,12 @@ for i in range(episodes):
     outcome = env.simulate_battle()
     outcomes.append(outcome)
 
+
+print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
+print('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
 print(f'USER WIN-RATE: {np.mean(outcomes)*100}% ({np.sum(outcomes)}/{len(outcomes)})')    
 
 end = time.time()
 elapsed = end - start
-print(f'simulated {episodes} battles in {elapsed:.2f} seconds')
+print(f'simulated {episodes} battle(s) in {elapsed:.2f} seconds')
 

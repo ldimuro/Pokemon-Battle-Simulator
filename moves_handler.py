@@ -616,3 +616,71 @@ def handle_stat_change(move: Move, pokemon: Pokemon, change):
 
     if 'evasiveness' in move.effect:
         pokemon.modifiy_stats_stage('evasiveness', change)
+
+def apply_status_effects(pokemon: Pokemon):
+    lose_turn = False
+
+    # Handle confusion functionality
+    if pokemon.is_confused:
+        pokemon.confused_count += 1
+        if pokemon.curr_confused_count == pokemon.confused_count:
+            pokemon.remove_confused()
+        else:
+            print(f'{pokemon.name.upper()} is confused')
+            if random.random() <= 0.5:
+                print(f'{pokemon.name.upper()} hurt itself in it\'s confusion')
+                confusion_damage_move = Move(
+                    name='confusion-damage',
+                    type='*',
+                    power=40,
+                    accuracy=100,
+                    category='physical',
+                    pp=25,
+                    effect='confusion damage'
+                )
+                confusion_damage = calculate_damage(confusion_damage_move, pokemon, pokemon)
+                pokemon.reduce_hp(confusion_damage)
+                lose_turn = True
+
+    # Handle all other status conditions
+    match pokemon.status:
+        case Status.PARALYZED:
+            print(f'{pokemon.name.upper()} is paralyzed')
+            pokemon.speed *= 0.25
+            if random.random() < 0.25:
+                lose_turn = True
+                print(f'{pokemon.name.upper()} is paralyzed. It can\'t move!')
+        case Status.ASLEEP:
+            # print(f'curr status_count: {pokemon.curr_status_count}, status_count: {pokemon.status_count}')
+            if pokemon.curr_status_count == pokemon.status_count:
+                pokemon.remove_status()
+                print(f'{pokemon.name.upper()} woke up!')
+            else:
+                pokemon.curr_status_count += 1
+                lose_turn = True
+                print(f'{pokemon.name.upper()} is asleep')
+        case Status.POISONED:
+            pokemon.reduce_hp(pokemon.base_hp/16)
+            print(f'{pokemon.name.upper()} was hurt by poison ({np.round(pokemon.base_hp/16, 2)} Damage)')
+        case Status.BURNED:
+            pokemon.attack *= 0.5
+            pokemon.reduce_hp(pokemon.base_hp/16)
+            print(f'{pokemon.name.upper()} was hurt by its burn')
+        case Status.FROZEN:
+            lose_turn = True
+            print(f'{pokemon.name.upper()} is frozen. It can\'t move!')
+        case _:
+            pass
+        
+    return lose_turn
+
+def get_hit_chance(move: Move, attacker: Pokemon, defender: Pokemon):
+    accuracy_stage_multipliers = {
+        -6: 0.33, -5: 0.375, -4: 0.43, -3: 0.5, -2: 0.6, -1: 0.75,
+            0: 1.0,  1: 1.33,   2: 1.66,  3: 2.0,  4: 2.33,  5: 2.66, 6: 3.0
+    }
+
+    accuracy = accuracy_stage_multipliers[attacker.accuracy_tier]
+    evasiveness= accuracy_stage_multipliers[defender.evasiveness_tier]
+    base = 100 if move.accuracy == -1 else move.accuracy / 100.0
+    return base * (accuracy / evasiveness)

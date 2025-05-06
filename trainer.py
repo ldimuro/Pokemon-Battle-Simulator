@@ -9,6 +9,5 @@ class Trainer:
         self.version = version
         
         # Randomly select pokemon of size party_size
-        self.party_size = party_size
-        self.party = [Pokemon(random.randint(1, version_pokemon_range[self.version]), self.name, self.version) for i in range(self.party_size)]
+        self.party = [Pokemon(random.randint(1, version_pokemon_range[self.version]), self.name, self.version) for i in range(party_size)]
         print(f'Trainer {self.name}, with Pokemon: [{[(mon.name, mon.level) for mon in self.party]}] (total levels={np.sum(mon.level for mon in self.party)})')
