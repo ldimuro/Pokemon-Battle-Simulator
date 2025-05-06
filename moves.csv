@@ -1,167 +1,167 @@
 name,type,power,accuracy,category,pp,effect
-absorb,grass,20,100,special,25,user recovers half the hp inflicted on opponent
-acid,poison,40,100,special,30,may lower opponent's special defense
-acid-armor,poison,-1,-1,status,20,sharply raises user's defense
-agility,psychic,-1,-1,status,30,sharply raises user's speed
-amnesia,psychic,-1,-1,status,20,sharply raises user's special defense
-aurora-beam,ice,65,100,special,20,may lower opponent's attack
-barrage,normal,15,85,physical,20,hits 2-5 times in one turn
-barrier,psychic,-1,-1,status,20,sharply raises user's defense
-bide,normal,-1,-1,physical,10,user takes damage for two turns then strikes back double
-bind,normal,15,85,physical,20,traps opponent, damaging them for 4-5 turns
-bite,dark,60,100,physical,25,may cause flinching
-blizzard,ice,110,70,special,5,may freeze opponent
-body-slam,normal,85,100,physical,15,may paralyze opponent
-bone-club,ground,65,85,physical,20,may cause flinching
-bonemerang,ground,50,90,physical,10,hits twice in one turn
-bubble,water,40,100,special,30,may lower opponent's speed
-bubble-beam,water,65,100,special,20,may lower opponent's speed
-clamp,water,35,85,physical,15,traps opponent, damaging them for 4-5 turns
-comet-punch,normal,18,85,physical,15,hits 2-5 times in one turn
-confuse-ray,ghost,-1,100,status,10,confuses opponent
-confusion,psychic,50,100,special,25,may confuse opponent
-constrict,normal,10,100,physical,35,may lower opponent's speed by one stage
-conversion,normal,-1,-1,status,30,changes user's type to that of its first move
-counter,fighting,-1,100,physical,20,when hit by a physical attack, user strikes back with 2x power
-crabhammer,water,100,90,physical,10,high critical hit ratio
-cut,normal,50,95,physical,30,none
-defense-curl,normal,-1,-1,status,40,raises user's defense
-dig,ground,80,100,physical,10,digs underground on first turn, attacks on second can also escape from caves
-disable,normal,-1,100,status,20,opponent can't use its last attack for a few turns
-dizzy-punch,normal,70,100,physical,10,may confuse opponent
-double-kick,fighting,30,100,physical,30,hits twice in one turn
-double-slap,normal,15,85,physical,10,hits 2-5 times in one turn
-double-team,normal,-1,-1,status,15,raises user's evasiveness
-double-edge,normal,120,100,physical,15,user receives recoil damage
-dragon-rage,dragon,-1,100,special,10,always inflicts 40 hp
-dream-eater,psychic,100,100,special,15,user recovers half the hp inflicted on a sleeping opponent
-drill-peck,flying,80,100,physical,20,none
-earthquake,ground,100,100,physical,10,power is doubled if opponent is underground from using dig
-egg-bomb,normal,100,75,physical,10,none
-ember,fire,40,100,special,25,may burn opponent
-explosion,normal,250,100,physical,5,user faints
-fire-blast,fire,110,85,special,5,may burn opponent
-fire-punch,fire,75,100,physical,15,may burn opponent
-fire-spin,fire,35,85,special,15,traps opponent, damaging them for 4-5 turns
-fissure,ground,-1,30,physical,5,one-hit-ko, if it hits
-flamethrower,fire,90,100,special,15,may burn opponent
-flash,normal,-1,100,status,20,lowers opponent's accuracy
-fly,flying,90,95,physical,15,flies up on first turn, attacks on second turn
-focus-energy,normal,-1,-1,status,30,increases critical hit ratio
-fury-attack,normal,15,85,physical,20,hits 2-5 times in one turn
-fury-swipes,normal,18,80,physical,15,hits 2-5 times in one turn
-glare,normal,-1,100,status,30,paralyzes opponent
-growl,normal,-1,100,status,40,lowers opponent's attack
-growth,normal,-1,-1,status,20,raises user's attack and special attack
-guillotine,normal,-1,30,physical,5,one-hit-ko, if it hits
-gust,flying,40,100,special,35,hits pokémon using fly/bounce/sky drop with double power
-harden,normal,-1,-1,status,30,raises user's defense
-haze,ice,-1,-1,status,30,resets all stat changes
-headbutt,normal,70,100,physical,15,may cause flinching
-high-jump-kick,fighting,130,90,physical,10,if it misses, the user loses half their hp
-horn-attack,normal,65,100,physical,25,none
-horn-drill,normal,-1,30,physical,5,one-hit-ko, if it hits
-hydro-pump,water,110,80,special,5,none
-hyper-beam,normal,150,90,special,5,user must recharge next turn
-hyper-fang,normal,80,90,physical,15,may cause flinching
-hypnosis,psychic,-1,60,status,20,puts opponent to sleep
-ice-beam,ice,90,100,special,10,may freeze opponent
-ice-punch,ice,75,100,physical,15,may freeze opponent
-jump-kick,fighting,100,95,physical,10,if it misses, the user loses half their hp
-karate-chop,fighting,50,100,physical,25,high critical hit ratio
-kinesis,psychic,-1,80,status,15,lowers opponent's accuracy
-leech-life,bug,80,100,physical,10,user recovers half the hp inflicted on opponent
-leech-seed,grass,-1,90,status,10,drains hp from opponent each turn
-leer,normal,-1,100,status,30,lowers opponent's defense
-lick,ghost,30,100,physical,30,may paralyze opponent
-light-screen,psychic,-1,-1,status,30,halves damage from special attacks for 5 turns
-lovely-kiss,normal,-1,75,status,10,puts opponent to sleep
-low-kick,fighting,-1,100,physical,20,the heavier the opponent, the stronger the attack
-meditate,psychic,-1,-1,status,40,raises user's attack
-mega-drain,grass,40,100,special,15,user recovers half the hp inflicted on opponent
-mega-kick,normal,120,75,physical,5,none
-mega-punch,normal,80,85,physical,20,none
-metronome,normal,-1,-1,status,10,user performs almost any move in the game at random
-mimic,normal,-1,-1,status,10,copies the opponent's last move
-minimize,normal,-1,-1,status,10,sharply raises user's evasiveness
-mirror-move,flying,-1,-1,status,20,user performs the opponent's last move
-mist,ice,-1,-1,status,30,user's stats cannot be changed for a period of time
-night-shade,ghost,-1,100,special,15,inflicts damage equal to user's level
-pay-day,normal,40,100,physical,20,none
-peck,flying,35,100,physical,35,none
-petal-dance,grass,120,100,special,10,user attacks for 2-3 turns but then becomes confused
-pin-missile,bug,25,95,physical,20,hits 2-5 times in one turn
-poison-gas,poison,-1,90,status,40,poisons opponent
-poison-powder,poison,-1,75,status,35,poisons opponent
-poison-sting,poison,15,100,physical,35,may poison the opponent
-pound,normal,40,100,physical,35,none
-psybeam,psychic,65,100,special,20,may confuse opponent
-psychic,psychic,90,100,special,10,may lower opponent's special defense
-psywave,psychic,-1,100,special,15,inflicts damage 50-150% of user's level
-quick-attack,normal,40,100,physical,30,user attacks first
-rage,normal,20,100,physical,20,raises user's attack when hit
-razor-leaf,grass,55,95,physical,25,high critical hit ratio
-razor-wind,normal,80,100,special,10,charges on first turn, attacks on second high critical hit ratio
-recover,normal,-1,-1,status,5,user recovers half its max hp
-reflect,psychic,-1,-1,status,20,halves damage from physical attacks for 5 turns
-rest,psychic,-1,-1,status,5,user sleeps for 2 turns, but user is fully healed
-roar,normal,-1,-1,status,20,in battles, the opponent switches in the wild, the pokémon runs
-rock-slide,rock,75,90,physical,10,may cause flinching
-rock-throw,rock,50,90,physical,15,none
-rolling-kick,fighting,60,85,physical,15,may cause flinching
-sand-attack,ground,-1,100,status,15,lowers opponent's accuracy
-scratch,normal,40,100,physical,35,none
-screech,normal,-1,85,status,40,sharply lowers opponent's defense
-seismic-toss,fighting,-1,100,physical,20,inflicts damage equal to user's level
-self-destruct,normal,200,100,physical,5,user faints
-sharpen,normal,-1,-1,status,30,raises user's attack
-sing,normal,-1,55,status,15,puts opponent to sleep
-skull-bash,normal,130,100,physical,10,raises defense on first turn, attacks on second
-sky-attack,flying,140,90,physical,5,charges on first turn, attacks on second may cause flinching high critical hit ratio
-slam,normal,80,75,physical,20,none
-slash,normal,70,100,physical,20,high critical hit ratio
-sleep-powder,grass,-1,75,status,15,puts opponent to sleep
-sludge,poison,65,100,special,20,may poison opponent
-smog,poison,30,70,special,20,may poison opponent
-smokescreen,normal,-1,100,status,20,lowers opponent's accuracy
-soft-boiled,normal,-1,-1,status,5,user recovers half its max hp
-solar-beam,grass,120,100,special,10,charges on first turn, attacks on second
-sonic-boom,normal,-1,90,special,20,always inflicts 20 hp
-spike-cannon,normal,20,100,physical,15,hits 2-5 times in one turn
-splash,normal,-1,-1,status,40,doesn't do anything
-spore,grass,-1,100,status,15,puts opponent to sleep
-stomp,normal,65,100,physical,20,may cause flinching
-strength,normal,80,100,physical,15,none
-string-shot,bug,-1,95,status,40,sharply lowers opponent's speed
-struggle,normal,50,-1,physical,-1,only usable when all pp are gone hurts the user
-stun-spore,grass,-1,75,status,30,paralyzes opponent
-submission,fighting,80,80,physical,20,user receives recoil damage
-substitute,normal,-1,-1,status,10,uses hp to creates a decoy that takes hits
-super-fang,normal,-1,90,physical,10,always takes off half of the opponent's hp
-supersonic,normal,-1,55,status,20,confuses opponent
-surf,water,90,100,special,15,hits all adjacent pokémon
-swift,normal,60,-1,special,20,ignores accuracy and evasiveness
-swords-dance,normal,-1,-1,status,20,sharply raises user's attack
-tackle,normal,40,100,physical,35,none
-tail-whip,normal,-1,100,status,30,lowers opponent's defense
-take-down,normal,90,85,physical,20,user receives recoil damage
-teleport,psychic,-1,-1,status,20,allows user to flee wild battles; also warps player to last pokécenter
-thrash,normal,120,100,physical,10,user attacks for 2-3 turns but then becomes confused
-thunder,electric,110,70,special,10,may paralyze opponent
-thunder-punch,electric,75,100,physical,15,may paralyze opponent
-thunder-shock,electric,40,100,special,30,may paralyze opponent
-thunder-wave,electric,-1,90,status,20,paralyzes opponent
-thunderbolt,electric,90,100,special,15,may paralyze opponent
-toxic,poison,-1,90,status,10,badly poisons opponent
-transform,normal,-1,-1,status,10,user takes on the form and attacks of the opponent
-tri-attack,normal,80,100,special,10,may paralyze, burn or freeze opponent
-twineedle,bug,25,100,physical,20,hits twice in one turn may poison opponent
-vine-whip,grass,45,100,physical,25,none
-vice-grip,normal,55,100,physical,30,none
-water-gun,water,40,100,special,25,none
-waterfall,water,80,100,physical,15,may cause flinching
-whirlwind,normal,-1,-1,status,20,in battles, the opponent switches in the wild, the pokémon runs
-wing-attack,flying,60,100,physical,35,none
-withdraw,water,-1,-1,status,40,raises user's defense
-wrap,normal,15,90,physical,20,traps opponent, damaging them for 4-5 turns
-confusion_damage,*,40,100,physical,50,confusion damage
+absorb,grass,20,100,special,25,"user recovers half the hp inflicted on opponent"
+acid,poison,40,100,special,30,"may lower opponent's special defense"
+acid-armor,poison,-1,-1,status,20,"sharply raises user's defense"
+agility,psychic,-1,-1,status,30,"sharply raises user's speed"
+amnesia,psychic,-1,-1,status,20,"sharply raises user's special defense"
+aurora-beam,ice,65,100,special,20,"may lower opponent's attack"
+barrage,normal,15,85,physical,20,"hits 2-5 times in one turn"
+barrier,psychic,-1,-1,status,20,"sharply raises user's defense"
+bide,normal,-1,-1,physical,10,"user takes damage for two turns then strikes back double"
+bind,normal,15,85,physical,20,"traps opponent, damaging them for 4-5 turns"
+bite,dark,60,100,physical,25,"may cause flinching"
+blizzard,ice,110,70,special,5,"may freeze opponent"
+body-slam,normal,85,100,physical,15,"may paralyze opponent"
+bone-club,ground,65,85,physical,20,"may cause flinching"
+bonemerang,ground,50,90,physical,10,"hits twice in one turn"
+bubble,water,40,100,special,30,"may lower opponent's speed"
+bubble-beam,water,65,100,special,20,"may lower opponent's speed"
+clamp,water,35,85,physical,15,"traps opponent, damaging them for 4-5 turns"
+comet-punch,normal,18,85,physical,15,"hits 2-5 times in one turn"
+confuse-ray,ghost,-1,100,status,10,"confuses opponent"
+confusion,psychic,50,100,special,25,"may confuse opponent"
+constrict,normal,10,100,physical,35,"may lower opponent's speed" by one stage
+conversion,normal,-1,-1,status,30,"changes user's type to that of its first move"
+counter,fighting,-1,100,physical,20,"when hit by a physical attack, user strikes back with 2x power"
+crabhammer,water,100,90,physical,10,"high critical hit ratio"
+cut,normal,50,95,physical,30,"none"
+defense-curl,normal,-1,-1,status,40,"raises user's defense"
+dig,ground,80,100,physical,10,"digs underground on first turn, attacks on second can also escape from caves"
+disable,normal,-1,100,status,20,"opponent can't use its last attack for a few turns"
+dizzy-punch,normal,70,100,physical,10,"may confuse opponent"
+double-kick,fighting,30,100,physical,30,"hits twice in one turn"
+double-slap,normal,15,85,physical,10,"hits 2-5 times in one turn"
+double-team,normal,-1,-1,status,15,"raises user's evasiveness"
+double-edge,normal,120,100,physical,15,"user receives recoil damage"
+dragon-rage,dragon,-1,100,special,10,"always inflicts 40 hp"
+dream-eater,psychic,100,100,special,15,"user recovers half the hp inflicted on a sleeping opponent"
+drill-peck,flying,80,100,physical,20,"none"
+earthquake,ground,100,100,physical,10,"power is doubled if opponent is underground from using dig"
+egg-bomb,normal,100,75,physical,10,"none"
+ember,fire,40,100,special,25,"may burn opponent"
+explosion,normal,250,100,physical,5,"user faints"
+fire-blast,fire,110,85,special,5,"may burn opponent"
+fire-punch,fire,75,100,physical,15,"may burn opponent"
+fire-spin,fire,35,85,special,15,"traps opponent, damaging them for 4-5 turns"
+fissure,ground,-1,30,physical,5,"one-hit-ko, if it hits"
+flamethrower,fire,90,100,special,15,"may burn opponent"
+flash,normal,-1,100,status,20,"lowers opponent's accuracy"
+fly,flying,90,95,physical,15,"flies up on first turn, attacks on second turn"
+focus-energy,normal,-1,-1,status,30,"increases critical hit ratio"
+fury-attack,normal,15,85,physical,20,"hits 2-5 times in one turn"
+fury-swipes,normal,18,80,physical,15,"hits 2-5 times in one turn"
+glare,normal,-1,100,status,30,"paralyzes opponent"
+growl,normal,-1,100,status,40,"lowers opponent's attack"
+growth,normal,-1,-1,status,20,"raises user's attack and special attack"
+guillotine,normal,-1,30,physical,5,"one-hit-ko, if it hits"
+gust,flying,40,100,special,35,"hits pokémon using fly/bounce/sky drop with double power"
+harden,normal,-1,-1,status,30,"raises user's defense"
+haze,ice,-1,-1,status,30,"resets all stat changes"
+headbutt,normal,70,100,physical,15,"may cause flinching"
+high-jump-kick,fighting,130,90,physical,10,"if it misses, the user loses half their hp"
+horn-attack,normal,65,100,physical,25,"none"
+horn-drill,normal,-1,30,physical,5,"one-hit-ko, if it hits"
+hydro-pump,water,110,80,special,5,"none"
+hyper-beam,normal,150,90,special,5,"user must recharge next turn"
+hyper-fang,normal,80,90,physical,15,"may cause flinching"
+hypnosis,psychic,-1,60,status,20,"puts opponent to sleep"
+ice-beam,ice,90,100,special,10,"may freeze opponent"
+ice-punch,ice,75,100,physical,15,"may freeze opponent"
+jump-kick,fighting,100,95,physical,10,"if it misses, the user loses half their hp"
+karate-chop,fighting,50,100,physical,25,"high critical hit ratio"
+kinesis,psychic,-1,80,status,15,"lowers opponent's accuracy"
+leech-life,bug,80,100,physical,10,"user recovers half the hp inflicted on opponent"
+leech-seed,grass,-1,90,status,10,"drains hp from opponent each turn"
+leer,normal,-1,100,status,30,"lowers opponent's defense"
+lick,ghost,30,100,physical,30,"may paralyze opponent"
+light-screen,psychic,-1,-1,status,30,"halves damage from special attacks for 5 turns"
+lovely-kiss,normal,-1,75,status,10,"puts opponent to sleep"
+low-kick,fighting,-1,100,physical,20,"the heavier the opponent, the stronger the attack"
+meditate,psychic,-1,-1,status,40,"raises user's attack"
+mega-drain,grass,40,100,special,15,"user recovers half the hp inflicted on opponent"
+mega-kick,normal,120,75,physical,5,"none"
+mega-punch,normal,80,85,physical,20,"none"
+metronome,normal,-1,-1,status,10,"user performs almost any move in the game at random"
+mimic,normal,-1,-1,status,10,"copies the opponent's last move"
+minimize,normal,-1,-1,status,10,"sharply raises user's evasiveness"
+mirror-move,flying,-1,-1,status,20,"user performs the opponent's last move"
+mist,ice,-1,-1,status,30,"user's stats cannot be changed for a period of time"
+night-shade,ghost,-1,100,special,15,"inflicts damage equal to user's level"
+pay-day,normal,40,100,physical,20,"none"
+peck,flying,35,100,physical,35,"none"
+petal-dance,grass,120,100,special,10,"user attacks for 2-3 turns but then becomes confused"
+pin-missile,bug,25,95,physical,20,"hits 2-5 times in one turn"
+poison-gas,poison,-1,90,status,40,"poisons opponent"
+poison-powder,poison,-1,75,status,35,"poisons opponent"
+poison-sting,poison,15,100,physical,35,"may poison the opponent"
+pound,normal,40,100,physical,35,"none"
+psybeam,psychic,65,100,special,20,"may confuse opponent"
+psychic,psychic,90,100,special,10,"may lower opponent's special defense"
+psywave,psychic,-1,100,special,15,"inflicts damage 50-150% of user's level"
+quick-attack,normal,40,100,physical,30,"user attacks first"
+rage,normal,20,100,physical,20,"raises user's attack when hit"
+razor-leaf,grass,55,95,physical,25,"high critical hit ratio"
+razor-wind,normal,80,100,special,10,"charges on first turn, attacks on second high critical hit ratio"
+recover,normal,-1,-1,status,5,"user recovers half its max hp"
+reflect,psychic,-1,-1,status,20,"halves damage from physical attacks for 5 turns"
+rest,psychic,-1,-1,status,5,"user sleeps for 2 turns, but user is fully healed"
+roar,normal,-1,-1,status,20,"in battles, the opponent switches in the wild, the pokémon runs"
+rock-slide,rock,75,90,physical,10,"may cause flinching"
+rock-throw,rock,50,90,physical,15,"none"
+rolling-kick,fighting,60,85,physical,15,"may cause flinching"
+sand-attack,ground,-1,100,status,15,"lowers opponent's accuracy"
+scratch,normal,40,100,physical,35,"none"
+screech,normal,-1,85,status,40,"sharply lowers opponent's defense"
+seismic-toss,fighting,-1,100,physical,20,"inflicts damage equal to user's level"
+self-destruct,normal,200,100,physical,5,"user faints"
+sharpen,normal,-1,-1,status,30,"raises user's attack"
+sing,normal,-1,55,status,15,"puts opponent to sleep"
+skull-bash,normal,130,100,physical,10,"raises defense on first turn, attacks on second"
+sky-attack,flying,140,90,physical,5,"charges on first turn, attacks on second may cause flinching high critical hit ratio"
+slam,normal,80,75,physical,20,"none"
+slash,normal,70,100,physical,20,"high critical hit ratio"
+sleep-powder,grass,-1,75,status,15,"puts opponent to sleep"
+sludge,poison,65,100,special,20,"may poison opponent"
+smog,poison,30,70,special,20,"may poison opponent"
+smokescreen,normal,-1,100,status,20,"lowers opponent's accuracy"
+soft-boiled,normal,-1,-1,status,5,"user recovers half its max hp"
+solar-beam,grass,120,100,special,10,"charges on first turn, attacks on second"
+sonic-boom,normal,-1,90,special,20,"always inflicts 20 hp"
+spike-cannon,normal,20,100,physical,15,"hits 2-5 times in one turn"
+splash,normal,-1,-1,status,40,"doesn't do anything"
+spore,grass,-1,100,status,15,"puts opponent to sleep"
+stomp,normal,65,100,physical,20,"may cause flinching"
+strength,normal,80,100,physical,15,"none"
+string-shot,bug,-1,95,status,40,"sharply lowers opponent's speed"
+struggle,normal,50,-1,physical,-1,"only usable when all pp are gone hurts the user"
+stun-spore,grass,-1,75,status,30,"paralyzes opponent"
+submission,fighting,80,80,physical,20,"user receives recoil damage"
+substitute,normal,-1,-1,status,10,"uses hp to creates a decoy that takes hits"
+super-fang,normal,-1,90,physical,10,"always takes off half of the opponent's hp"
+supersonic,normal,-1,55,status,20,"confuses opponent"
+surf,water,90,100,special,15,"hits all adjacent pokémon"
+swift,normal,60,-1,special,20,"ignores accuracy and evasiveness"
+swords-dance,normal,-1,-1,status,20,"sharply raises user's attack"
+tackle,normal,40,100,physical,35,"none"
+tail-whip,normal,-1,100,status,30,"lowers opponent's defense"
+take-down,normal,90,85,physical,20,"user receives recoil damage"
+teleport,psychic,-1,-1,status,20,"allows user to flee wild battles; also warps player to last pokécenter"
+thrash,normal,120,100,physical,10,"user attacks for 2-3 turns but then becomes confused"
+thunder,electric,110,70,special,10,"may paralyze opponent"
+thunder-punch,electric,75,100,physical,15,"may paralyze opponent"
+thunder-shock,electric,40,100,special,30,"may paralyze opponent"
+thunder-wave,electric,-1,90,status,20,"paralyzes opponent"
+thunderbolt,electric,90,100,special,15,"may paralyze opponent"
+toxic,poison,-1,90,status,10,"badly poisons opponent"
+transform,normal,-1,-1,status,10,"user takes on the form and attacks of the opponent"
+tri-attack,normal,80,100,special,10,"may paralyze, burn or freeze opponent"
+twineedle,bug,25,100,physical,20,"hits twice in one turn may poison opponent"
+vine-whip,grass,45,100,physical,25,"none"
+vice-grip,normal,55,100,physical,30,"none"
+water-gun,water,40,100,special,25,"none"
+waterfall,water,80,100,physical,15,"may cause flinching"
+whirlwind,normal,-1,-1,status,20,"in battles, the opponent switches in the wild, the pokémon runs"
+wing-attack,flying,60,100,physical,35,"none"
+withdraw,water,-1,-1,status,40,"raises user's defense"
+wrap,normal,15,90,physical,20,traps opponent, "damaging them for 4-5 turns"
+confusion_damage,*,40,100,physical,50,"confusion damage"

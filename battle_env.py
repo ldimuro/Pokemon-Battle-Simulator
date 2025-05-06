@@ -25,6 +25,8 @@ class BattleEnv:
             player_move: Move = self.player_pokemon.use_move()
             opp_move: Move = self.opp_pokemon.use_move()
 
+            # SET UP PRIORITY
+
             if self.player_pokemon.speed >= self.opp_pokemon.speed:
                 first_pokemon, first_move = self.player_pokemon, player_move
                 second_pokemon, second_move = self.opp_pokemon, opp_move
@@ -33,8 +35,8 @@ class BattleEnv:
                 second_pokemon, second_move = self.player_pokemon, player_move
 
             print(f'=============================|TURN {turn}|=============================')
-            print('1st pokemon temp_effects:', first_pokemon.temp_effects)
-            print('2nd pokemon temp_effects:', second_pokemon.temp_effects)
+            print(f'{first_pokemon.name.upper()} temp_effects:', first_pokemon.temp_effects)
+            print(f'{second_pokemon.name.upper()} temp_effects:', second_pokemon.temp_effects)
             self.print_game_state()
 
             # CHECK TO SEE IF POKEON LOSES ITS TURN
@@ -66,6 +68,11 @@ class BattleEnv:
                 self.execute_move(second_move, second_pokemon, first_pokemon)
 
             turn += 1
+
+
+
+        print(f'{first_pokemon.name.upper()} temp_effects:', first_pokemon.temp_effects)
+        print(f'{second_pokemon.name.upper()} temp_effects:', second_pokemon.temp_effects)
             
         self.print_game_state()
 
@@ -79,6 +86,7 @@ class BattleEnv:
         print(f'{attacker.name.upper()} uses {move.name.upper()}')
 
         hit_chance = self.get_hit_chance(move, attacker, defender)*100
+
         if hit_chance == 1 or random.randint(0, 100) <= hit_chance:
             special_moves.handle_move_effects(move, attacker, defender)
         else:

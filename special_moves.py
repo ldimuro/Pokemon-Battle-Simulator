@@ -6,8 +6,10 @@ import pandas as pd
 from pokemon_enums import Status
 from moves import moves_db
 
-# - none
 
+# FINISHED
+################################################
+# - none
 # - 'may'
 #     - 'lower'
 #         - 'special defense'
@@ -226,7 +228,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         return
     
     if 'random' in move.effect:
-        if 'any move in the game' in move.effect: # Only applies to metronome
+        if 'any move in the game' in move.effect: # Only applies to Metronome
             _, move = random.choice(list(moves_db.items()))
             print(f'{attacker.name.upper()} randomly uses {move.name.upper()}')
         elif 'power' in move.effect: # Only applies to magnitude
@@ -248,7 +250,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
 
     if 'may' in move.effect:
-        if 'lower':
+        if 'lower' in move.effect:
             if random.random() <= 0.1:
                 handle_stat_change(move, defender, -1)
 
@@ -351,29 +353,29 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
     if 'drains hp' in move.effect:
         if 'grass' not in defender.types:
-            attacker.temp_effects['drains_hp'] = {'move': move, 'turns_left': -1, 'effect': 'opp loses 1/8 max hp, user recovers it'}
+            attacker.temp_effects['drains_hp'] = {'move': move.name, 'turns_left': -1, 'effect': 'opp loses 1/8 max hp, user recovers it'}
             print('TODO: drains hp')
         else:
             print('the move had no effect')
 
     if 'traps' in move.effect:
-        defender.temp_effects['trapped'] = {'move': move, 'turns_left': random.choice([4, 5])}
+        defender.temp_effects['trapped'] = {'move': move.name, 'turns_left': random.choice([4, 5])}
         print(f'{defender.name.upper()} has become trapped!')
         print('TODO: traps')
 
     if 'next turn' in move.effect:
         if 'recharge' in move.effect:
-            defender.temp_effects['recharge'] = {'move': move, 'turns_left': 1, 'effect': 'user loses turn'}
+            defender.temp_effects['recharge'] = {'move': move.name, 'turns_left': 1, 'effect': 'user loses turn'}
 
-        if 'opponent to sleep':
-            defender.temp_effects['opp_to_sleep'] = {'move': move, 'turns_left': 1, 'effect': 'opp sleeps'}
+        if 'opponent to sleep' in move.effect:
+            defender.temp_effects['opp_to_sleep'] = {'move': move.name, 'turns_left': 1, 'effect': 'opp sleeps'}
 
         print('TODO: next turn')
 
     if 'on first turn' in move.effect and 'attacks on second' in move.effect:
-        attacker.temp_effects['attacks_on_second'] = {'move': move, 'turns_left': 1, 'effect': 'attacks'}
+        attacker.temp_effects['attacks_on_second'] = {'move': move.name, 'turns_left': 1, 'effect': 'attacks'}
         damage = 0
-        print(f'{attacker.name.upper()} {move.effect[0]}')
+        print(f'{attacker.name.upper()} {move.effect.split(' ')[0]}')
         print('TODO: on first turn, attacks on second')
         pass
 
@@ -391,8 +393,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             damage = calculate_damage(move, attacker, defender)
             defender.reduce_hp(damage)
             print('DAMAGE: ', damage)
-        print(f'Hit {hit_count} times!')
-        return
+        print(f'Hit {hit_count} time(s)!')
 
     if 'ignores' in move.effect:
         print('TODO: ignores')
@@ -403,14 +404,14 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         pass
 
     if 'when hit' in move.effect:
-        if 'raises user\'s attack':
-            attacker.temp_effects['when_hit'] = {'move': move, 'turns_left': -1, 'effect': 'raises attack'}
+        if 'raises user\'s attack' in move.effect:
+            attacker.temp_effects['when_hit'] = {'move': move.name, 'turns_left': -1, 'effect': 'raises attack'}
 
-        if 'by a physical attack':
-            attacker.temp_effects['when_hit_phys'] = {'move': move, 'turns_left': -1, 'effect': 'strikes back with 2x power'}
+        if 'by a physical attack' in move.effect:
+            attacker.temp_effects['when_hit_phys'] = {'move': move.name, 'turns_left': -1, 'effect': 'strikes back with 2x power'}
 
-        if 'by a special attack':
-            attacker.temp_effects['when_hit_sp'] = {'move': move, 'turns_left': -1, 'effect': 'strikes back with 2x power'}
+        if 'by a special attack' in move.effect:
+            attacker.temp_effects['when_hit_sp'] = {'move': move.name, 'turns_left': -1, 'effect': 'strikes back with 2x power'}
 
         print('TODO: when hit')
         pass
@@ -435,7 +436,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         print(f'{attacker.name.upper()} took recoil damage')
 
     if 'user takes damage for two turns then strikes back double' in move.effect:
-        attacker.temp_effects['bide'] = {'move': move, 'turns_left': 2, 'effect': 'attacks with damage_stored*2', 'damage_stored': 0}
+        attacker.temp_effects['bide'] = {'move': move.name, 'turns_left': 2, 'effect': 'attacks with damage_stored*2', 'damage_stored': 0}
         print('TODO: user takes damage for two turns then strikes back double')
         pass
 
@@ -449,19 +450,19 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
     if 'always inflicts' in move.effect:
         if '40 hp' in move.effect:
-            damage = calculate_damage(move, attacker, defender, damage_override=40)
+            damage = 40#calculate_damage(move, attacker, defender, damage_override=40)
         elif '20 hp' in move.effect:
-            damage = calculate_damage(move, attacker, defender, damage_override=20)
+            damage = 20#calculate_damage(move, attacker, defender, damage_override=20)
 
     if 'inflicts damage' in move.effect:
         if f'50-150% of user\'s level' in move.effect:
-            damage = calculate_damage(move, attacker, defender, damage_override=np.round(attacker.level*random.uniform(0.5, 1.5), 1))
+            damage = np.round(attacker.level*random.uniform(0.5, 1.5), 1)#calculate_damage(move, attacker, defender, damage_override=np.round(attacker.level*random.uniform(0.5, 1.5), 1))
 
         if 'equal to the user\'s remaining HP' in move.effect:
-            damage = calculate_damage(move, attacker, defender, damage_override=attacker.curr_hp)
+            damage = attacker.curr_hp#calculate_damage(move, attacker, defender, damage_override=attacker.curr_hp)
 
         if 'equal to user\'s level' in move.effect:
-            damage = calculate_damage(move, attacker, defender, damage_override=attacker.level)
+            damage = attacker.level#calculate_damage(move, attacker, defender, damage_override=attacker.level)
 
         if 'based on the target\'s defense, not special defense' in move.effect:
             print('TODO: based on the target\'s defense, not special defense')
@@ -479,7 +480,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             damage *= 2
 
         if 'if a teammate fained on the last turn' in move.effect:
-            print('TODO: if a teammate fained on the last turn')
+            print('TODO: if a teammate fainted on the last turn')
             pass
 
     if 'faints' in move.effect:
@@ -487,7 +488,9 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         print('TODO: faints')
         pass
 
-    if 'one-hit ko' in move.effect:
+    print(move.effect)
+
+    if 'one-hit-ko' in move.effect:
         damage = defender.curr_hp
         print(f'{defender.name.upper()} was one-hit KO\'d!')
 
@@ -498,15 +501,15 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
     if 'halves' in move.effect:
         if 'damage' in move.effect:
             if 'physical and special attacks' in move.effect:
-                attacker.temp_effects['halves_phys_spatk'] = {'move': move, 'turns_left': 5, 'effect': 'halves damage from physical and special attacks'}
+                attacker.temp_effects['halves_phys_spatk'] = {'move': move.name, 'turns_left': 5, 'effect': 'halves damage from physical and special attacks'}
                 pass
 
             if 'special attacks' in move.effect and 'physical' not in move.effect:
-                attacker.temp_effects['halves_spatk'] = {'move': move, 'turns_left': 5, 'effect': 'halves damage from special attacks'}
+                attacker.temp_effects['halves_spatk'] = {'move': move.name, 'turns_left': 5, 'effect': 'halves damage from special attacks'}
                 pass
 
             if 'physical attacks' in move.effect:
-                attacker.temp_effects['halves_phys'] = {'move': move, 'turns_left': 5, 'effect': 'halves damage from physical attacks'}
+                attacker.temp_effects['halves_phys'] = {'move': move.name, 'turns_left': 5, 'effect': 'halves damage from physical attacks'}
                 pass
         
         if 'foe\'s hp' in move.effect:
@@ -571,13 +574,16 @@ def calculate_damage(move: Move, attacker: Pokemon, defender: Pokemon, damage_ov
     level_factor = (((2 * attacker.level * attacker.crit_ratio) / 5) + 2)
     base = ((level_factor * move.power * (a / d)) / 50) + 2
 
-    if move.power == -1:
-        damage = 0
-    else:
+    damage = 0
+    if move.power > -1:
         damage = np.round(base * stab * type_effect * random_val, 2)
+    # if move.power == -1:
+    #     damage = 0
+    # else:
+    #     damage = np.round(base * stab * type_effect * random_val, 2)
 
-    if damage_override > 0:
-        damage = damage_override
+    # if damage_override > 0:
+    #     damage = damage_override
     
         
     if move.category != 'status':

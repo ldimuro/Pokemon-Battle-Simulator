@@ -22,7 +22,7 @@ for i in range(episodes):
     # 313455 use of Metronome
     # 272224 uses of Metronome that randomly selects Metronome again
     # 843007 both pokemon faint on the last turn
-    seed = 235261#random.randint(0, 1000000)
+    seed = random.randint(0, 1000000)
     main_helper.set_seed(seed)
 
     agent_pokemon = Pokemon(random.randint(1, 151), version) # 4 for charmander
