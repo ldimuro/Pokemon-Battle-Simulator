@@ -302,7 +302,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
                     defender.add_status(Status.POISONED)
 
 
-    if 'raises' in move.effect and not 'sharply raises' in move.effect and 'when hit' not in move.effect:
+    if 'raises' in move.effect and not 'sharply raises' in move.effect and 'when hit' not in move.effect and 'first turn' not in move.effect:
         handle_stat_change(move, attacker, 1)
 
     if 'lowers' in move.effect and not 'sharply lowers' in move.effect:
@@ -487,8 +487,6 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         attacker.reduce_hp(attacker.curr_hp)
         print('TODO: faints')
         pass
-
-    print(move.effect)
 
     if 'one-hit-ko' in move.effect:
         damage = defender.curr_hp

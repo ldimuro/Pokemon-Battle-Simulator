@@ -1,5 +1,6 @@
 from pokemon import Pokemon
 from battle_env import BattleEnv
+from trainer import Trainer
 import moves
 import random
 import numpy as np
@@ -25,13 +26,17 @@ for i in range(episodes):
     seed = random.randint(0, 1000000)
     main_helper.set_seed(seed)
 
-    agent_pokemon = Pokemon(random.randint(1, 151), version) # 4 for charmander
-    agent_pokemon.print_data()
+    user = Trainer('ASH', version)
+    opp = Trainer('GARY', version)
 
-    opp_pokemon = Pokemon(random.randint(1, 151), version) # 7 for squirtle
+    # Each side throws out the first pokemon in their party (randomly chosen)
+    user_pokemon = Pokemon(user.party[0].id, version)
+    user_pokemon.print_data()
+
+    opp_pokemon = Pokemon(opp.party[0].id, version)
     opp_pokemon.print_data()
 
-    env = BattleEnv(agent_pokemon, opp_pokemon)
+    env = BattleEnv(user_pokemon, opp_pokemon)
 
     env.start_battle()
 
