@@ -42,6 +42,9 @@ class BattleEnv:
                 first_pokemon, first_move = self.opp_pokemon, opp_move
                 second_pokemon, second_move = self.player_pokemon, player_move
 
+
+
+
             print(f'=============================|TURN {turn}|=============================')
             print(f'{first_pokemon.name.upper()} temp_effects:', first_pokemon.temp_effects)
             print(f'{second_pokemon.name.upper()} temp_effects:', second_pokemon.temp_effects)
@@ -50,6 +53,10 @@ class BattleEnv:
             # CHECK TO SEE IF POKEON LOSES ITS TURN
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = moves_handler.apply_status_effects(first_pokemon)
+
+            # APPLY TEMP_EFFECTS
+            has_lost_turn = moves_handler.apply_temp_effects(first_pokemon, second_pokemon)
+
 
             if first_pokemon.is_fainted:
                 if first_pokemon.owner == self.trainer1.name:
@@ -79,10 +86,15 @@ class BattleEnv:
             
             print(f'------------------------------------------------------------------')
 
+            self.print_game_state()
+
 
             # CHECK TO SEE IF POKEMON LOSES ITS TURN
             # APPLY STATUS (IF APPLICABLE)
             has_lost_turn = moves_handler.apply_status_effects(second_pokemon)
+
+            # APPLY TEMP_EFFECTS
+            has_lost_turn = moves_handler.apply_temp_effects(second_pokemon, first_pokemon)
 
             if second_pokemon.is_fainted:
                 # Remove fainted pokemon from trainer and throw in next in line
@@ -105,19 +117,18 @@ class BattleEnv:
             if self.player_pokemon is None or self.opp_pokemon is None:
                 break
 
-
-            self.print_game_state()
-
             
             # Second Move
             if not has_lost_turn:
                 self.execute_move(second_move, second_pokemon, first_pokemon)
 
+
+
             turn += 1
 
 
             print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
-            print(f'{self.trainer1.name}: {len(self.trainer1.party)}, {self.trainer2.name} pokemon: {len(self.trainer2.party)} ')
+            print(f'{self.trainer1.name} pokemon left: {len(self.trainer1.party)}, {self.trainer2.name} pokemon left: {len(self.trainer2.party)} ')
 
 
             
@@ -142,6 +153,7 @@ class BattleEnv:
         if hit_chance == 1 or random.random() <= hit_chance:
             moves_handler.handle_move_effects(move, attacker, defender)
         else:
+            attacker.move_history.append(None) # missed moves are recorded in the history as None
             print(f'{attacker.name.upper()}\'s move missed')
 
 

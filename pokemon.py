@@ -62,6 +62,9 @@ class Pokemon:
         all_moves = [move.name for move in pokemon.moves[version]]
         self.moves = self.choose_moves(all_moves)
 
+        self.move_history = []
+        self.damage_history = []
+
         # SPRITES
         self.sprites = pokemon.sprites
         self.other_sprites = pokemon.other_sprites
@@ -105,10 +108,13 @@ class Pokemon:
         return final_moves
     
     def use_move(self):
-        return random.choice(self.moves)
+        chosen_move = random.choice(self.moves)
+        self.move_history.append(chosen_move)
+        return chosen_move
     
     def reduce_hp(self, damage):
         self.curr_hp = max(0, np.round(self.curr_hp - damage, 2))
+        self.damage_history.append(damage)
         if self.curr_hp <= 0:
             self.is_fainted = True
             print(f'{self.name.upper()} fainted!')

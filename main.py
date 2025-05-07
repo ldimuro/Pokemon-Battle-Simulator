@@ -7,8 +7,9 @@ import numpy as np
 import main_helper
 import time
 
-# 957405: Kadabra sweeps Gary's entire team in 1 turn?
-seed = random.randint(0, 1000000)
+# 957405: Kadabra sweeps Gary's entire team in 1 turn? (party_size=3)
+# 604053: Hitmonchan hits Chansey with thunder-punch for 513 damage? (party_size=3)
+seed = 471433#random.randint(0, 1000000)
 main_helper.set_seed(seed)
 
 
