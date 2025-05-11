@@ -9,7 +9,7 @@ import time
 
 # 957405: Kadabra sweeps Gary's entire team in 1 turn? (party_size=3)
 # 604053: Hitmonchan hits Chansey with thunder-punch for 513 damage? (party_size=3)
-seed = 471433#random.randint(0, 1000000)
+seed = random.randint(0, 1000000) #471433
 main_helper.set_seed(seed)
 
 
@@ -17,7 +17,7 @@ start = time.time()
 
 
 version = 'red-blue'
-party_size = 3
+party_size = 2
 episodes = 1
 
 outcomes = []

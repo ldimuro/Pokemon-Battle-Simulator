@@ -125,6 +125,8 @@ class BattleEnv:
 
 
             turn += 1
+            first_pokemon.update_move_history(first_move)
+            second_pokemon.update_move_history(second_move)
 
 
             print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
@@ -153,7 +155,7 @@ class BattleEnv:
         if hit_chance == 1 or random.random() <= hit_chance:
             moves_handler.handle_move_effects(move, attacker, defender)
         else:
-            attacker.move_history.append(None) # missed moves are recorded in the history as None
+            attacker.move_history.append(0) # missed moves are recorded in the history as 0
             print(f'{attacker.name.upper()}\'s move missed')
 
 

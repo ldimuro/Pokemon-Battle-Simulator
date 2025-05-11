@@ -109,8 +109,10 @@ class Pokemon:
     
     def use_move(self):
         chosen_move = random.choice(self.moves)
-        self.move_history.append(chosen_move)
         return chosen_move
+    
+    def update_move_history(self, move):
+        self.move_history.append(move)
     
     def reduce_hp(self, damage):
         self.curr_hp = max(0, np.round(self.curr_hp - damage, 2))

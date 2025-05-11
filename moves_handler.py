@@ -111,7 +111,7 @@ from moves import moves_db
 - 'may'
     - 'flinching'
 
-# - 'badly poisons'
+- 'badly poisons'
 
 - 'drains hp'
 
@@ -339,7 +339,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
     if 'recovers' in move.effect:
         if 'half the hp inflicted' in move.effect:
-            if 'sleeping' in move.effect:
+            if 'sleeping' in move.effect: # for Dream Eater
                 if defender.status == Status.ASLEEP:
                     attacker.recover_hp(np.round(damage/2, 2))
                 else:
@@ -423,7 +423,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             defender.temp_effects[f'disable_{defender.move_history[-1]}'] = {'move': move.name, 'turns_left': 5, 'effect': f'opp can\'t use {defender.move_history[-1]} for 5 turns'}
             print(f'TODO: {defender.name.upper()} had {defender.move_history[-1]} disabled')
 
-        if 'forces opponent to keep using its last move for 3 turns':
+        if 'forces opponent to keep using its last move for 3 turns' in move.effect:
             defender.temp_effects[f'encore_{defender.move_history[-1]}'] = {'move': move.name, 'turns_left': 3, 'effect': f'opp must use {defender.move_history[-1]} for 3 turns'}
             print(f'TODO: {defender.name.upper()} is forced to use {defender.move_history[-1]}')
 
@@ -432,7 +432,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
             damage = calculate_damage(move, attacker, defender)
             print(f'{attacker.name.upper()} copied {defender.name.upper()} and used {move.name.upper()}')
 
-        if 'pp' in move.effect:
+        if ' pp' in move.effect:
             print('TODO: handle last move PP reduction')
             pass
 
@@ -452,7 +452,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         print(f'{attacker.name.upper()} took recoil damage')
 
     if 'user takes damage for two turns then strikes back double' in move.effect:
-        attacker.temp_effects['bide'] = {'move': move.name, 'turns_left': 2, 'effect': 'attacks with damage_stored*2', 'damage_stored': 0}
+        attacker.temp_effects['bide'] = {'move': move.name, 'turns_left': 2, 'effect': 'attacks with damage_stored*2'}
         print('TODO: user takes damage for two turns then strikes back double')
         pass
 
@@ -466,19 +466,19 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
 
     if 'always inflicts' in move.effect:
         if '40 hp' in move.effect:
-            damage = 40#calculate_damage(move, attacker, defender, damage_override=40)
+            damage = 40
         elif '20 hp' in move.effect:
-            damage = 20#calculate_damage(move, attacker, defender, damage_override=20)
+            damage = 20
 
     if 'inflicts damage' in move.effect:
         if f'50-150% of user\'s level' in move.effect:
-            damage = np.round(attacker.level*random.uniform(0.5, 1.5), 1)#calculate_damage(move, attacker, defender, damage_override=np.round(attacker.level*random.uniform(0.5, 1.5), 1))
+            damage = np.round(attacker.level*random.uniform(0.5, 1.5), 1)
 
         if 'equal to the user\'s remaining HP' in move.effect:
-            damage = attacker.curr_hp#calculate_damage(move, attacker, defender, damage_override=attacker.curr_hp)
+            damage = attacker.curr_hp
 
         if 'equal to user\'s level' in move.effect:
-            damage = attacker.level#calculate_damage(move, attacker, defender, damage_override=attacker.level)
+            damage = attacker.level
 
         if 'based on the target\'s defense, not special defense' in move.effect:
             print('TODO: based on the target\'s defense, not special defense')
@@ -548,7 +548,7 @@ def handle_move_effects(move: Move, attacker: Pokemon, defender: Pokemon):
         pass
 
     if 'user attacks for 3 turns and prevents sleep' in move.effect:
-        attacker.temp_effects['attack_and_prevent_sleep'] = {'move': move.name, 'turns_left': turns, 'effect': 'user becomes confused'}
+        attacker.temp_effects['attack_and_prevent_sleep'] = {'move': move.name, 'turns_left': 3, 'effect': 'user cant sleep'}
         print('TODO: user attacks for 3 turns and prevents sleep (and wakes up)')
         pass
 
@@ -597,9 +597,7 @@ def calculate_damage(move: Move, attacker: Pokemon, defender: Pokemon):
     level_factor = (((2 * attacker.level * attacker.crit_ratio) / 5) + 2)
     base = ((level_factor * move.power * (a / d)) / 50) + 2
 
-    damage = 0
-    if move.power > -1:
-        damage = np.round(base * stab * type_effect * random_val, 2)
+    damage = np.round(base * stab * type_effect * random_val, 2) if move.power > -1 else 0
         
     if move.category != 'status':
         if type_effect >= 2.0:
@@ -713,6 +711,12 @@ def apply_temp_effects(attacker: Pokemon, defender: Pokemon):
                     defender.reduce_hp(damage)
                     effects_to_remove.append(key)
                     print(f'{attacker.name.upper()} unleashes energy: ({damage} Damage)!')
+            # elif key == 'attack_on_second':
+                # lose_turn = True
+                # value['turns_left'] -= 1
+                # if value['turns_left'] > 0:
+
+
 
     for effect in effects_to_remove:
         del attacker.temp_effects[effect]
